@@ -21,13 +21,12 @@ import {
 } from "../data/HelperFunctions";
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { CircularProgress, Fade, Stack } from "@mui/material";
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import Person2Icon from "@mui/icons-material/Person2";
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { width } from '@mui/system';
 
-export const ReservationForm: React.FC = () => {
+export const UserForm: React.FC = () => {
 
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -65,6 +64,11 @@ export const ReservationForm: React.FC = () => {
                 Enter reservation details
               </Typography>
               <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                  <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Person2Icon sx={{ alignSelf: "center", height: "60px", width: "60px" }} />
+                    <Typography sx={{ alignSelf: "center" }} component="h1" variant="h5">
+                      Fill personal information
+                    </Typography>
                     <Grid container spacing={2}>
                       <Grid width="100%" item marginBottom={1}></Grid>
                       <Grid item xs={12}>
@@ -81,9 +85,9 @@ export const ReservationForm: React.FC = () => {
                         />
                       </Grid>
                       <Grid item xs={6}>
-                        <DateTimePicker
+                        <DesktopDatePicker
                           label="Reservation start date"
-                          inputFormat="DD/MM/YYYY HH:mm"
+                          inputFormat="dd/MM/yyyy HH:mm:ss"
                           value={startDate}
                           onChange={(x: any) => setStartDate(x)}
                           renderInput={(params: any) => (
@@ -99,9 +103,9 @@ export const ReservationForm: React.FC = () => {
                         />
                       </Grid>
                       <Grid item xs={6}>
-                        <DateTimePicker
-                          label="Reservation end date"
-                          inputFormat="DD/MM/YYYY HH:mm"
+                        <DesktopDatePicker
+                          label="Job end date"
+                          inputFormat="MM/DD/YYYY"
                           value={endDate}
                           onChange={(x: any) => setEndDate(x)}
                           renderInput={(params: any) => (
@@ -117,9 +121,10 @@ export const ReservationForm: React.FC = () => {
                         />
                       </Grid>
                       <Grid item xs={12}>
-                      <TextareaAutosize value={description} onChange={(x) => setDescription(x.target.value)} placeholder='Description' style={{width:'100%'}} />
+                      <TextareaAutosize/>
                       </Grid>
                     </Grid>
+                  </Box>
                 <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                   Submit
                 </Button>

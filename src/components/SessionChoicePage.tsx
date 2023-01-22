@@ -14,7 +14,6 @@ export const SessionChoicePage: React.FC = () => {
     <Box margin='auto' width="20%">
         <Stack marginTop='100px' spacing={3}>
         <Button sx={{height: 50}} variant="contained" onClick={() => navigate('login')}>Log in</Button>
-        <Button sx={{height: 50}} variant="outlined" onClick={() => {setUserLogged('guest');navigate('guest');}}>Continue as a guest</Button>
         </Stack>
         <Outlet/>
     </Box>
