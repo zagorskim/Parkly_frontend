@@ -38,8 +38,8 @@ export function ValidateDates(date1: string, date2: string) {
   return false;
 }
 
-export function ValidateNumericLoan(number: string) {
-  if (/(?=.*[0-9])/.test(number) || number == "" || Number.parseInt(number) < 1) {
+export function ValidateNumericFloat(number: string) {
+  if (/^\d{0,8}(\.\d{0,8}){0,1}$/.test(number) || number == "" || Number.parseInt(number) < 1) {
     return true;
   }
   return false;

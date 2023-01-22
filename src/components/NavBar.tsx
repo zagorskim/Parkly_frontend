@@ -75,7 +75,7 @@ export const NavBar: React.FC = () => {
     setUserLogged("");
     navigate("/");
   };
-  const pages = userData.accountType == "admin" ? pages2 : pages1;
+  const pages = userData.accountType == "admin" ? pages2 : pages2;
 
   return (
     <AppBar position="static">
