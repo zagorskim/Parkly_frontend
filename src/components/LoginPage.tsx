@@ -88,11 +88,11 @@ export const LoginPage: React.FC = () => {
                         Forgot password?
                         </Link>
                     </Grid> */}
-                    <Grid width='100%' item>
+                    {/* <Grid width='100%' item>
                         <Link href="register" variant="body2">
                         {"Don't have an account? Sign Up"}
                         </Link>
-                    </Grid>
+                    </Grid> */}
                     </Grid>
                 </Box>
             </Box>

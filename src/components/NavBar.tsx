@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AppIcon from '@mui/icons-material/DirectionsCarFilled';
+import AppIcon from "@mui/icons-material/DirectionsCarFilled";
 import { useRecoilState } from "recoil";
 import { useRecoilValue } from "recoil";
 import { NavBarProfile, NavBarSubpages } from "../data/AppModeData";
@@ -20,8 +20,10 @@ import { width } from "@mui/system";
 import { UserLogged } from "./../data/AppModeData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserData } from "../data/UserData";
 
-const pages1 = ["RESERVATIONS", "PARKING LOTS"];
+const pages1 = ["RESERVATIONS", "PARKING LOTS", "ADD RESERVATION", "ADD PARKING LOT"];
+const pages2 = ["RESERVATIONS", "PARKING LOTS", "ADD RESERVATION", "ADD PARKING LOT", "ADD USER"];
 const settings1 = ["Profile", "Logout"];
 
 // MUI template navigation bar
@@ -29,6 +31,7 @@ export const NavBar: React.FC = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [userLogged, setUserLogged] = useRecoilState(UserLogged);
+  const [userData, setUserData] = useRecoilState(UserData);
   const profileState = useRecoilValue(NavBarProfile);
   const pagesState = useRecoilValue(NavBarSubpages);
   const navigate = useNavigate();
@@ -49,19 +52,30 @@ export const NavBar: React.FC = () => {
   };
 
   const reservationsHandler = () => {
-    if (userLogged == "guest") navigate("/guest/reservations");
-    else navigate("/home/reservations");
+    navigate("/home/reservations");
   };
 
   const parkingLotsHandler = () => {
-    if (userLogged == "guest") navigate("/guest/parkinglots");
-    else navigate("/home/parkinglots");
+    navigate("/home/parkinglots");
+  };
+
+  const addReservationHandler = () => {
+    navigate("/home/addreservation");
+  };
+
+  const addParkingLotHandler = () => {
+    navigate("/home/addparkinglot");
+  };
+
+  const addUserHandler = () => {
+    navigate("/home/adduser");
   };
 
   const logoutHandler = () => {
     setUserLogged("");
     navigate("/");
   };
+  const pages = userData.accountType == "admin" ? pages2 : pages1;
 
   return (
     <AppBar position="static">
@@ -131,7 +145,7 @@ export const NavBar: React.FC = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages1.map((page) => (
+                {pages.map((page) => (
                   <MenuItem
                     key={page}
                     onClick={() => {
@@ -171,13 +185,16 @@ export const NavBar: React.FC = () => {
           {/* PAGES DESKTOP */}
           {pagesState && (
             <Box sx={{ marginLeft: 2, flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages1.map((page) => (
+              {pages.map((page) => (
                 <Button
                   key={page}
                   onClick={() => {
                     handleCloseNavMenu();
                     if (page == "RESERVATIONS") reservationsHandler();
                     if (page == "PARKING LOTS") parkingLotsHandler();
+                    if (page == "ADD RESERVATION") addReservationHandler();
+                    if (page == "ADD PARKING LOT") addParkingLotHandler();
+                    if (page == "ADD USER") addUserHandler();
                   }}
                   sx={{ fontSize: 20, my: 2, color: "white", display: "block" }}
                 >
