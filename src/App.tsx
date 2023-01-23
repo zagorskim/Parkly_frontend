@@ -11,6 +11,7 @@ import { LoggedPage } from './components/LoggedPage';
 import { RegisterPage } from './components/RegisterPage';
 import { Error404Page } from './components/Error404Page';
 import { ReservationList } from './components/ReservationList';
+import { ParkingLotList } from './components/ParkingLotList';
 
 function App() {
   const [count, setCount] = useState(0)
