@@ -5,13 +5,14 @@ import { NavBar } from './components/NavBar';
 import { Routes, Route } from 'react-router-dom';
 import { SessionChoicePage } from './components/SessionChoicePage';
 import { LoginPage } from './components/LoginPage';
-import { GuestPage } from './components/GuestPage';
 import { ReservationForm } from './components/ReservationForm';
 import { LoggedPage } from './components/LoggedPage';
-import { RegisterPage } from './components/RegisterPage';
 import { Error404Page } from './components/Error404Page';
 import { ReservationList } from './components/ReservationList';
 import { ParkingLotList } from './components/ParkingLotList';
+import { ParkingLotForm } from './components/ParkingLotForm';
+import { UserForm } from './components/UserForm';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,11 +23,12 @@ function App() {
       <Routes>
         <Route path='/' element={<SessionChoicePage/>}/>
         <Route path ='login' element={<LoginPage/>}/>
-        <Route path ='guest' element={<GuestPage/>}/>
-        <Route path='guest/reservations' element={<ReservationList/>}/>
         <Route path ='home' element={<LoggedPage/>}/>
         <Route path='home/reservations' element={<ReservationList/>}/>
-        <Route path ='register' element={<RegisterPage/>}/>
+        <Route path='home/addreservation' element={<ReservationForm/>}/>
+        <Route path='home/addparkinglot' element={<ParkingLotForm/>}/>
+        <Route path='home/adduser' element={<UserForm/>}/>
+
         <Route path="*" element={<Error404Page />} />
       </Routes>
     </div>

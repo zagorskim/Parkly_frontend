@@ -15,6 +15,8 @@ import { ReservationListRow } from './ReservationListRow';
 import TextField from '@mui/material/TextField';
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
+import { Stack } from '@mui/material';
+import { Reservation } from './Reservation';
 
 export const ReservationList: React.FC = () => {
     const [list, setList] = useRecoilState(ReservationInquiry);
@@ -82,5 +84,6 @@ export const ReservationList: React.FC = () => {
 				)}
 			</Box>
 		</Container>
+
     )
 } 
