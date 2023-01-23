@@ -163,7 +163,7 @@ export const ParkingLotForm: React.FC = () => {
               <Grid item xs={12}>
                 <Button fullWidth variant="outlined" component="label">
                   Upload File
-                  <input accept="image/*" onChange={(x) =>{ if(x.target.files != null) setParkingPhoto(x.target.files[0]); console.log(x.target.files[0])}} type="file" hidden />
+                  <input accept="image/*" onChange={(x) =>{ if(x.target.files != null) setParkingPhoto(x.target.files[0]);}} type="file" hidden />
                 </Button>
               </Grid>
             </Grid>

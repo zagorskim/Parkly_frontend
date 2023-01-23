@@ -21,6 +21,7 @@ export const ParkingLotList: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
+		console.log(list);
 		setIsLoading(false);
 	});
 
