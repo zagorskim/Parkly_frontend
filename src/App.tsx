@@ -9,8 +9,10 @@ import { ReservationForm } from './components/ReservationForm';
 import { LoggedPage } from './components/LoggedPage';
 import { Error404Page } from './components/Error404Page';
 import { ReservationList } from './components/ReservationList';
+import { ParkingLotList } from './components/ParkingLotList';
 import { ParkingLotForm } from './components/ParkingLotForm';
 import { UserForm } from './components/UserForm';
+
 
 function App() {
   const [count, setCount] = useState(0)
