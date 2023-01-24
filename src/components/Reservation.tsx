@@ -4,7 +4,7 @@ import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/material";
 import Button from "@mui/material/Button";
-export const Reservation: React.FC<InquiryDetails> = (props) => {
+export const Reservation: React.FC = (props) => {
   const [data, setData] = useState(props);
 
   return (
