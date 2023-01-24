@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import { Outlet } from "react-router-dom";
-import { InquiryDetails } from "../data/Types";
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/material";
