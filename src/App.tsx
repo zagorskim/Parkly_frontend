@@ -12,6 +12,7 @@ import { ReservationList } from './components/ReservationList';
 import { ParkingLotList } from './components/ParkingLotList';
 import { ParkingLotForm } from './components/ParkingLotForm';
 import { UserForm } from './components/UserForm';
+import Button from '@mui/material/Button';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path ='login' element={<LoginPage/>}/>
         <Route path ='home' element={<LoggedPage/>}/>
         <Route path='home/reservations' element={<ReservationList/>}/>
+        <Route path='home/parkinglots' element={<ParkingLotList/>}/>
         <Route path='home/addreservation' element={<ReservationForm/>}/>
         <Route path='home/addparkinglot' element={<ParkingLotForm/>}/>
         <Route path='home/adduser' element={<UserForm/>}/>
