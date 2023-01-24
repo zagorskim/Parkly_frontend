@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { useRecoilState } from 'recoil';
-import { ReservationInquiry } from '../data/ReservationData';
 import { CircularProgress, Stack } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
@@ -11,14 +10,14 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { ReservationListRow } from './ReservationListRow';
+import { ParkingLotListRow } from './ParkingLotListRow';
 import TextField from '@mui/material/TextField';
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
-import { Reservation } from './Reservation';
+import { ParkingLotInquiry } from '../data/ParkingLotData';
 
-export const ReservationList: React.FC = () => {
-    const [list, setList] = useRecoilState(ReservationInquiry);
+export const ParkingLotList: React.FC = () => {
+    const [list, setList] = useRecoilState(ParkingLotInquiry);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -43,7 +42,7 @@ export const ReservationList: React.FC = () => {
 				)}
 				{isLoading || (
 					<TableContainer style={{padding: "30px"}}>
-					<TextField id="outlined-search" label="Search reservations" type="search" fullWidth
+					<TextField id="outlined-search" label="Search parking lots" type="search" fullWidth
 					InputProps={{
 						endAdornment: (
 						  <InputAdornment position="start">
@@ -66,16 +65,16 @@ export const ReservationList: React.FC = () => {
 						<TableRow>
 						  <TableCell></TableCell>
 						  <TableCell>Parking Lot Address</TableCell>
-						  <TableCell>Start Date</TableCell>
-						  <TableCell>End Date</TableCell>
-						  <TableCell>User ID</TableCell>
+						  <TableCell>Slots Total</TableCell>
+						  <TableCell>Slots Available</TableCell>
+						  <TableCell>Type</TableCell>
 						  <TableCell>{ }</TableCell>
 						  <TableCell>{ }</TableCell>
 						</TableRow>
 					  </TableHead>
 					  <TableBody>
-						{list.map((reservation) => (
-						  <ReservationListRow reservation={reservation}/>
+						{list.map((parkingLot) => (
+						  <ParkingLotListRow parkingLot={parkingLot}/>
 						))}
 					  </TableBody>
 					</Table>
@@ -84,6 +83,5 @@ export const ReservationList: React.FC = () => {
 				)}
 			</Box>
 		</Container>
-
     )
-} 
+}
