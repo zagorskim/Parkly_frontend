@@ -5,6 +5,11 @@ export const UserLogged = atom({
     default: '',
 })
 
+export const UserToken = atom({
+    key: 'UserToken',
+    default: '',
+})
+
 export const NavBarProfile = selector({
     key: 'NavBarProfile',
     get: ({ get }) => {
