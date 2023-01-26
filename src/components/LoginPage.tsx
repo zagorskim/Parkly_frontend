@@ -13,9 +13,8 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { UserLogged, UserToken } from '../data/AppModeData';
 import axios from "axios";
 import { AUTHENTICATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
-import { ValidatePassword, ValidateLetters } from '../../../../../../dotNet/Project/dotNet_project_repo/frontend/loan_verifier/src/data/HelperFunctions';
 import {useState} from 'react';
-import { ValidateLettersAndNumbers } from '../data/HelperFunctions';
+import { ValidateLettersAndNumbers, ValidatePassword } from '../data/HelperFunctions';
 
 export const LoginPage: React.FC = () => {
   const [userLogged, setUserLogged] = useRecoilState(UserLogged);
