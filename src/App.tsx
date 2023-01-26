@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
 import reactLogo from './assets/react.svg'
 import './App.css'
 import { NavBar } from './components/NavBar';
@@ -16,6 +16,10 @@ import { UserForm } from './components/UserForm';
 function App() {
   const [count, setCount] = useState(0)
   
+  useEffect(() => {
+    // TBD: fetching user data if possible  
+  });
+
   return (
     <div className="App">
       <NavBar /> 

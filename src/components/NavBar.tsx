@@ -14,26 +14,24 @@ import MenuItem from "@mui/material/MenuItem";
 import AppIcon from "@mui/icons-material/DirectionsCarFilled";
 import { useRecoilState } from "recoil";
 import { useRecoilValue } from "recoil";
-import { NavBarProfile, NavBarSubpages } from "../data/AppModeData";
 import Divider from "@mui/material/Divider";
 import { width } from "@mui/system";
-import { UserLogged } from "./../data/AppModeData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserData } from "../data/UserData";
+import { UserDetails } from '../data/Types';
 
 const pages1 = ["RESERVATIONS", "PARKING LOTS", "ADD RESERVATION", "ADD PARKING LOT"];
 const pages2 = ["RESERVATIONS", "PARKING LOTS", "ADD RESERVATION", "ADD PARKING LOT", "ADD USER"];
+const pages3 = [] as string[];
+
 const settings1 = ["Profile", "Logout"];
 
 // MUI template navigation bar
 export const NavBar: React.FC = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const [userLogged, setUserLogged] = useRecoilState(UserLogged);
-  const [userData, setUserData] = useRecoilState(UserData);
-  const profileState = useRecoilValue(NavBarProfile);
-  const pagesState = useRecoilValue(NavBarSubpages);
+  const [userLogged, setUserLogged] = useRecoilState(UserData);
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -72,15 +70,17 @@ export const NavBar: React.FC = () => {
   };
 
   const logoutHandler = () => {
-    setUserLogged("");
+    setUserLogged({} as UserDetails);
     navigate("/");
   };
-  const pages = userData.accountType == "admin" ? pages2 : pages2;
-
+  let pages = [];
+  if(userLogged.accountType == "BASIC") pages = pages1
+  else if(userLogged.accountType == "SUPER") pages = pages2;
+  else pages = pages3;
   return (
     <AppBar position="static">
       {/* LOGO AND APP NAME DESKTOP*/}
-      <Container>
+      <Container  maxWidth={false}>
         <Toolbar disableGutters>
           <AppIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1, fontSize: 70, margin: 2 }} />
           <Typography
@@ -89,7 +89,7 @@ export const NavBar: React.FC = () => {
             noWrap
             component="a"
             onClick={() => {
-              if (userLogged == "" || userLogged == "guest") navigate("/");
+              if (userLogged.accountType != "BASIC" && userLogged.accountType != "SUPER") navigate("/");
               else navigate("home");
             }}
             sx={{
@@ -105,7 +105,7 @@ export const NavBar: React.FC = () => {
           >
             PARKLY
           </Typography>
-          {userLogged != "" && (
+          {userLogged.accountType != "BASIC" && userLogged.accountType != "SUPER" && (
             <Divider
               orientation="vertical"
               variant="middle"
@@ -115,7 +115,6 @@ export const NavBar: React.FC = () => {
           )}
 
           {/* PAGES MOBILE*/}
-          {pagesState && (
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -159,15 +158,13 @@ export const NavBar: React.FC = () => {
                 ))}
               </Menu>
             </Box>
-          )}
-
           {/* LOGO AND APP NAME MOBILE */}
           <AppIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href={userLogged == "" || userLogged == "guest" ? "/" : "home"}
+            href={userLogged.accountType != "BASIC" && userLogged.accountType != "SUPER" ? "/" : "home"}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -183,7 +180,6 @@ export const NavBar: React.FC = () => {
           </Typography>
 
           {/* PAGES DESKTOP */}
-          {pagesState && (
             <Box sx={{ marginLeft: 2, flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
@@ -202,10 +198,9 @@ export const NavBar: React.FC = () => {
                 </Button>
               ))}
             </Box>
-          )}
 
           {/* PROFILE SETTINGS */}
-          {profileState && (
+          {(userLogged.accountType == "BASIC" || userLogged.accountType == "SUPER") && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
