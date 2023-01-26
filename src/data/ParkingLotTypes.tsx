@@ -10,3 +10,9 @@ export interface ParkingLotDetails {
 	type: string,
 	security: boolean
 }
+
+export enum ParkingLotTypes {
+	Normal,
+	Covered,
+	Underground,
+}

@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import { UserLogged } from "../data/AppModeData";
 import { UserData } from "./../data/UserData";
 import { useRecoilState } from "recoil";
 import Container from "@mui/material/Container";
@@ -24,17 +23,20 @@ import { CircularProgress, Fade, Stack } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
+import { ParkingLotDetails, ParkingLotTypes } from '../data/ParkingLotTypes';
+import { ParkingLotFormMode } from '../data/ParkingLotData';
 
 export const ParkingLotForm: React.FC = () => {
+  const [modeData, setModeData] = useRecoilState(ParkingLotFormMode);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [description, setDescription] = useState("");
-  const [pricePerDay, setPricePerDay] = useState(0);
-  const [parkingLotType, setParkingLotType] = useState({});
-  const [parkingPhoto, setParkingPhoto] = useState({});
-    const [parkingLotName, setParkingLotName] = useState('');
+  const [latitude, setLatitude] = useState(modeData.mode == 'create' ? "" : modeData.data.latitude);
+  const [longitude, setLongitude] = useState(modeData.mode == 'create' ? "" : modeData.data.longitude);
+  const [description, setDescription] = useState(modeData.mode == 'create' ? "" : modeData.data.description);
+  const [pricePerDay, setPricePerDay] = useState(modeData.mode == 'create' ? 0 : modeData.data.price_per_day);
+  const [parkingLotType, setParkingLotType] = useState(modeData.mode == 'create' ? Object.values(ParkingLotTypes)[0].toString() : modeData.data.type);
+  const [parkingPhoto, setParkingPhoto] = useState(modeData.mode == 'create' ? {} as File : {name: 'previousPhoto.extention'} as File);
+    const [parkingLotName, setParkingLotName] = useState(modeData.mode == 'create' ? "" : modeData.data.address);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setErrorMessage("");
@@ -89,11 +91,11 @@ export const ParkingLotForm: React.FC = () => {
                   disablePortal
                   fullWidth
                   id="parkingType"
-                  options={[]}
+                  options={Object.keys(ParkingLotTypes).filter(k => isNaN(Number(k)))}
                   renderInput={(params) => <TextField {...params} label="Parking Type" />}
                   value={parkingLotType}
                   onChange={(event, value) => {
-                    setParkingLotType({});
+                    setParkingLotType(value as string);
                   }}
                 />
               </Grid>
@@ -126,9 +128,9 @@ export const ParkingLotForm: React.FC = () => {
                   value={latitude}
                   autoFocus
                   onChange={(x) => setLatitude(x.target.value)}
-                  error={!ValidateNumericFloat(latitude)}
+                  error={!ValidateNumericFloat(latitude.toString())}
                   helperText={
-                    !ValidateNumericFloat(latitude) &&
+                    !ValidateNumericFloat(latitude.toString()) &&
                     "Only numeric values separated with '.' (NNNN.NNNN)"
                   }
                 />
@@ -145,9 +147,9 @@ export const ParkingLotForm: React.FC = () => {
                   value={longitude}
                   autoFocus
                   onChange={(x) => setLongitude(x.target.value)}
-                  error={!ValidateNumericFloat(longitude)}
+                  error={!ValidateNumericFloat(longitude.toString())}
                   helperText={
-                    !ValidateNumericFloat(longitude) &&
+                    !ValidateNumericFloat(longitude.toString()) &&
                     "Only numeric values separated with dot '.' (NNNN.NNNN)"
                   }
                 />
@@ -169,7 +171,8 @@ export const ParkingLotForm: React.FC = () => {
             </Grid>
           </Box>
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Submit
+            {modeData.mode != 'create' && 'Submit'}
+            {modeData.mode == 'create' && 'Update'}
           </Button>
           <Box mt={3} sx={{ height: 40 }}></Box>
         </Box>
