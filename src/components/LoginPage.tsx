@@ -10,15 +10,15 @@ import Container from "@mui/material/Container";
 import LoginIcon from "@mui/icons-material/LoginOutlined";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { UserLogged, UserToken } from '../data/AppModeData';
 import axios from "axios";
 import { AUTHENTICATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import {useState} from 'react';
 import { ValidateLettersAndNumbers, ValidatePassword } from '../data/HelperFunctions';
+import { UserData } from './../data/UserData';
+import { UserDetails } from '../data/Types';
 
 export const LoginPage: React.FC = () => {
-  const [userLogged, setUserLogged] = useRecoilState(UserLogged);
-  const [token, setToken] = useRecoilState(UserToken);
+  const [userLogged, setUserLogged] = useRecoilState(UserData);
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
@@ -32,10 +32,10 @@ export const LoginPage: React.FC = () => {
       password: data.get("password"),
     }).then((res) => {
         console.log(res);
-        setToken(res.data.jwttoken);
-        navigate('/home');
-        setUserLogged("simple");
+        // TBD: fetching and assigning other user info too
+        setUserLogged({token: res.data.jwttoken, accountType: "BASIC"} as UserDetails);
         localStorage.setItem('token', res.data);
+        navigate('/home');
     }).catch((res) => {
         console.log(res);
     });

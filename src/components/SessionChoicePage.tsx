@@ -2,12 +2,12 @@ import { Box, Stack } from "@mui/material";
 import { Button } from "@mui/material/";
 import { width } from '@mui/system';
 import { useRecoilState } from 'recoil';
-import { UserLogged } from '../data/AppModeData';
 import { useNavigate, Outlet } from 'react-router-dom';
+import { UserData } from './../data/UserData';
 
 export const SessionChoicePage: React.FC = () => {
 
-    const [userLogged, setUserLogged] = useRecoilState(UserLogged);
+    const [userLogged, setUserLogged] = useRecoilState(UserData);
     const navigate = useNavigate();
 
     return (
