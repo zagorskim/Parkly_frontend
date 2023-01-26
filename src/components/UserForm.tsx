@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
-import { UserLogged } from "../data/AppModeData";
+import { UserLogged, UserToken } from '../data/AppModeData';
 import { UserData } from "./../data/UserData";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
@@ -25,20 +25,41 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import Person2Icon from "@mui/icons-material/Person2";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
+import { ValidateLettersAndNumbers } from '../data/HelperFunctions';
+import { CREATE_USER_ENDPOINT_ADDRESS } from '../ConnectionVariables';
 
 export const UserForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [token, setToken] = useRecoilState(UserToken);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setErrorMessage("");
     setLoading(true);
     event.preventDefault();
-
-    // POST reservation
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    axios.post(CREATE_USER_ENDPOINT_ADDRESS, {
+      // TEMPORARILY RAND UNTIL ID WON'T BE REQUIRED IN THE ENDPOINT
+      id: Math.floor(Math.random() * 10000),
+      username: userName,
+      password: password,
+      email: email,
+      userType: "BASIC",
+    }
+    , config).then((res) => {
+      console.log(res);
+      setErrorMessage('User created successfully!');
+      setLoading(false);
+    }).catch((res) => {
+      console.log(res);
+      setErrorMessage('Error occured during user creation');
+      setLoading(false);
+    })
   };
 
   return (
@@ -62,53 +83,54 @@ export const UserForm: React.FC = () => {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="userName"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="userName"
+                  label="Username"
                   autoFocus
-                  value={firstName}
-                  onChange={(x) => setFirstName(x.target.value)}
-                  error={!ValidateLetters(firstName)}
+                  value={userName}
+                  onChange={(x) => setUserName(x.target.value)}
+                  error={!ValidateLettersAndNumbers(userName)}
                   helperText={
-                    !ValidateLetters(firstName) &&
+                    !ValidateLettersAndNumbers(userName) &&
                     "Only letter allowed, must start with uppercase letter"
                   }
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
+                  id="email"
+                  label="Email"
+                  name="email"
                   autoComplete="family-name"
-                  value={lastName}
-                  onChange={(x) => setLastName(x.target.value)}
-                  error={!ValidateLetters(lastName)}
-                  helperText={
-                    !ValidateLetters(lastName) &&
-                    "Only letter allowed, must start with uppercase letter"
-                  }
+                  value={email}
+                  onChange={(x) => setEmail(x.target.value)}
+                  error={!ValidateEmail(email)}
+                  helperText={!ValidateEmail(email) && "Wrong email format"}
+  
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(x) => setEmail(x.target.value)}
-                  error={!ValidateEmail(email)}
-                  helperText={!ValidateEmail(email) && "Wrong email format"}
+                  id="password"
+                  label="Password"
+                  name="password"
+                  autoComplete="password"
+                  value={password}
+                  onChange={(x) => setPassword(x.target.value)}
+                  error={!ValidatePassword(password)}
+                  helperText={
+                    !ValidatePassword(password) &&
+                    "Password too weak (must be at least 8-character long and contain one lower case letter, one upper case letter, one number and one special character)"
+                  }
                 />
               </Grid>
             </Grid>

@@ -29,6 +29,13 @@ export function ValidateLetters(string: string) {
   return false;
 }
 
+export function ValidateLettersAndNumbers(string: string) {
+  if (/([A-Za-z0-9])$/.test(string) || string == "") {
+    return true;
+  }
+  return false;
+}
+
 export function ValidateDates(date1: string, date2: string) {
   const d1 = new Date(date2);
   const d2 = new Date(date1);
