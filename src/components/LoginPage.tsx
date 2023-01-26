@@ -13,10 +13,15 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { UserLogged, UserToken } from '../data/AppModeData';
 import axios from "axios";
 import { AUTHENTICATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
+import { ValidatePassword, ValidateLetters } from '../../../../../../dotNet/Project/dotNet_project_repo/frontend/loan_verifier/src/data/HelperFunctions';
+import {useState} from 'react';
+import { ValidateLettersAndNumbers } from '../data/HelperFunctions';
 
 export const LoginPage: React.FC = () => {
   const [userLogged, setUserLogged] = useRecoilState(UserLogged);
   const [token, setToken] = useRecoilState(UserToken);
+  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +33,7 @@ export const LoginPage: React.FC = () => {
       password: data.get("password"),
     }).then((res) => {
         console.log(res);
-        setToken(res.data);
+        setToken(res.data.jwttoken);
         navigate('/home');
         setUserLogged("simple");
         localStorage.setItem('token', res.data);
@@ -64,6 +69,13 @@ export const LoginPage: React.FC = () => {
             label="Username"
             name="username"
             autoFocus
+            value={userName}
+            onChange={(x) => setUserName(x.target.value)}
+            error={!ValidateLettersAndNumbers(userName)}
+            helperText={
+              !ValidateLettersAndNumbers(userName) &&
+              "Only letters and numbers allowed"
+            }
           />
           <TextField
             margin="normal"
@@ -74,7 +86,14 @@ export const LoginPage: React.FC = () => {
             type="password"
             id="password"
             autoComplete="current-password"
-          />
+            value={password}
+            onChange={(x) => setPassword(x.target.value)}
+            error={!ValidatePassword(password)}
+            helperText={
+              !ValidatePassword(password) &&
+              "Password too weak (must be at least 8-character long and contain one lower case letter, one upper case letter, one number and one special character)"
+            }
+              />
           {/* <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
                     label="Remember me"
