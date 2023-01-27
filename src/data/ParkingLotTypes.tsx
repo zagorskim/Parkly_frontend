@@ -8,5 +8,12 @@ export interface ParkingLotDetails {
 	longitude: number,
 	price_per_day: number,
 	type: string,
-	security: boolean
+	security: boolean,
+	photo: string,
+}
+
+export enum ParkingLotTypes {
+	Normal,
+	Covered,
+	Underground,
 }

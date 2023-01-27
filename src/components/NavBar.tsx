@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserData } from "../data/UserData";
 import { UserDetails } from '../data/Types';
+import { Stack } from '@mui/material';
 
 const pages1 = ["RESERVATIONS", "PARKING LOTS", "ADD RESERVATION", "ADD PARKING LOT"];
 const pages2 = ["RESERVATIONS", "PARKING LOTS", "ADD RESERVATION", "ADD PARKING LOT", "ADD USER"];
@@ -69,16 +70,22 @@ export const NavBar: React.FC = () => {
     navigate("/home/adduser");
   };
 
+  useEffect(() => {
+  }, [userLogged])
+
   const logoutHandler = () => {
-    setUserLogged({} as UserDetails);
-    navigate("/");
+      sessionStorage.removeItem("token");
+      navigate("/");
+      setUserLogged({} as UserDetails);
+      //signOut();
   };
+
   let pages = [];
   if(userLogged.accountType == "BASIC") pages = pages1
   else if(userLogged.accountType == "SUPER") pages = pages2;
   else pages = pages3;
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       {/* LOGO AND APP NAME DESKTOP*/}
       <Container  maxWidth={false}>
         <Toolbar disableGutters>
@@ -200,11 +207,29 @@ export const NavBar: React.FC = () => {
             </Box>
 
           {/* PROFILE SETTINGS */}
+          <Stack
+            spacing={3}
+            direction="row"
+            alignItems="center"
+            textAlign="right"
+            sx={{ alignContent: "right", flexGrow: 0 }}
+          >
+
+          {(userLogged.accountType == "BASIC" || userLogged.accountType == "SUPER") && (
+              <Stack direction="column">
+                <Typography textAlign="left">
+                  {"Logged as " + userLogged.username}
+                </Typography>
+                <Typography textAlign="left">
+                    {(userLogged.accountType == "BASIC" ? "Basic" : "Admin") + " account type"}
+                </Typography>
+              </Stack>
+          )}
           {(userLogged.accountType == "BASIC" || userLogged.accountType == "SUPER") && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Remy Sharp" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -229,6 +254,7 @@ export const NavBar: React.FC = () => {
                     onClick={() => {
                       handleCloseUserMenu();
                       if (setting == "Logout") logoutHandler();
+                      if (setting == "Profile") navigate('/profile');
                     }}
                   >
                     <Typography textAlign="center">{setting}</Typography>
@@ -237,6 +263,7 @@ export const NavBar: React.FC = () => {
               </Menu>
             </Box>
           )}
+          </Stack>
         </Toolbar>
       </Container>
     </AppBar>

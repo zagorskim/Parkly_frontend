@@ -1,7 +1,7 @@
 export interface UserDetails
 {
-    name: string,
-    surname: string,
+    username: string,
     accountType: string,
     token: string,
+    email: string,
 }
