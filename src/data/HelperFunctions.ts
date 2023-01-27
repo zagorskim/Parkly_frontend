@@ -16,7 +16,7 @@ export function ValidatePassword(password: string) {
 }
 
 export function ValidateNumeric(number: string) {
-  if (/(?=.*[0-9])/.test(number) || number == "") {
+  if (/(^[0-9]*$)/.test(number) || number == "") {
     return true;
   }
   return false;

@@ -85,7 +85,7 @@ export const NavBar: React.FC = () => {
   else if(userLogged.accountType == "SUPER") pages = pages2;
   else pages = pages3;
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       {/* LOGO AND APP NAME DESKTOP*/}
       <Container  maxWidth={false}>
         <Toolbar disableGutters>

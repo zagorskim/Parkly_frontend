@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { UserData } from "./../data/UserData";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilStoreID } from "recoil";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
@@ -25,27 +25,76 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Person2Icon from "@mui/icons-material/Person2";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { width } from "@mui/system";
-import { ReservationFormMode } from '../data/ReservationData';
-import { ParkingLotInquiry } from '../data/ParkingLotData';
-import { ParkingLotDetails } from '../data/ParkingLotTypes';
+import { ReservationFormMode } from "../data/ReservationData";
+import { ParkingLotInquiry } from "../data/ParkingLotData";
+import { ParkingLotDetails } from "../data/ParkingLotTypes";
+import { PUT_RESERVATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 
 export const ReservationForm: React.FC = () => {
   const [modeData, setModeData] = useRecoilState(ReservationFormMode);
   const [parkingLots, setParkingLots] = useRecoilState(ParkingLotInquiry);
+  const [userLogged, setUserLogged] = useRecoilState(UserData);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState(modeData.mode == 'create' ? "01/01/2023" : modeData.data.start_date.getDay().toString() + '/' + modeData.data.start_date.getMonth().toString() + modeData.data.start_date.getFullYear().toString());
-  const [endDate, setEndDate] = useState(modeData.mode == 'create' ? "01/02/2023" : modeData.data.end_date.getDay().toString() + '/' + modeData.data.end_date.getMonth().toString() + modeData.data.end_date.getFullYear().toString());
-  const [description, setDescription] = useState(modeData.mode == 'create' ? "" : modeData.data.description);
-  const [parkingLot, setParkingLot] = useState(modeData.mode == 'create' ? {} as ParkingLotDetails : parkingLots[modeData.data.parking_lot_id]);
+  const [startDate, setStartDate] = useState(
+    modeData.mode == "create"
+      ? "01/01/2023"
+      : modeData.data.start_date.getDay().toString() +
+          "/" +
+          modeData.data.start_date.getMonth().toString() +
+          modeData.data.start_date.getFullYear().toString()
+  );
+  const [endDate, setEndDate] = useState(
+    modeData.mode == "create"
+      ? "01/02/2023"
+      : modeData.data.end_date.getDay().toString() +
+          "/" +
+          modeData.data.end_date.getMonth().toString() +
+          modeData.data.end_date.getFullYear().toString()
+  );
+  const [description, setDescription] = useState(
+    modeData.mode == "create" ? "" : modeData.data.description
+  );
+  const [parkingLot, setParkingLot] = useState(
+    modeData.mode == "create"
+      ? ({} as ParkingLotDetails)
+      : parkingLots[modeData.data.parking_lot_id]
+  );
+  const [userId, setUserId] = useState(modeData.mode == "create" ? "" : modeData.data.id);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setErrorMessage("");
     setLoading(true);
     event.preventDefault();
-
-    if(modeData.mode == 'create') {
-    // POST reservation
+    if (modeData.mode == "create") {
+      const config = {
+        headers: { Authorization: `Bearer ${userLogged.token}` },
+      };
+      const start = new Date(startDate);
+      console.log(start.getUTCMonth())
+      const end = new Date(endDate);
+      axios
+        .put(
+          PUT_RESERVATION_ENDPOINT_ADDRESS,
+          {
+            reservationId: -1,
+            description: description,
+            userId: Number.parseInt(userId as string),
+            parkingId: parkingLot.id,
+            startDate: start.getFullYear().toString() + '-' + ((start.getUTCMonth() + 1) < 10 ? '0' + (start.getUTCMonth() + 1).toString() : start.getUTCMonth() + 1).toString() + '-' + start.getUTCDate().toString(),
+            endDate:  end.getFullYear().toString() + '-' + ((end.getUTCMonth() + 1) < 10 ? '0' + (end.getUTCMonth() + 1).toString() : end.getUTCMonth() + 1).toString() + '-' + end.getUTCDate().toString(),
+          },
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          setLoading(false);
+        })
+        .catch((res) => {
+          console.log(res);
+          setErrorMessage("Error occured during creating reservation");
+          setLoading(false);
+        });
     } else {
       // UPDATE reservation
     }
@@ -57,7 +106,7 @@ export const ReservationForm: React.FC = () => {
         <CssBaseline />
         <Box
           sx={{
-            width: '100%',
+            width: "100%",
             marginTop: 3,
             display: "flex",
             flexDirection: "column",
@@ -79,13 +128,28 @@ export const ReservationForm: React.FC = () => {
                   disablePortal
                   fullWidth
                   id="jobType"
-                  options={parkingLots.map((x, index) => { return x.address;})}
+                  options={parkingLots.map((x, index) => {
+                    return x.address;
+                  })}
                   renderInput={(params) => <TextField {...params} label="Parking Lot" />}
-                  value={modeData.mode == 'create' ? '' : parkingLots[parkingLot.id].address}
+                  value={parkingLot.address != undefined ? parkingLots[parkingLot.id].address : ''}
                   onChange={(event, value) => {
-                    // TBD: Parking lot to be set from list
-                    setParkingLot({} as ParkingLotDetails);
+                    setParkingLot(parkingLots.find((x) => {return x.address == value;}) as ParkingLotDetails);
                   }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  name="userId"
+                  required
+                  fullWidth
+                  id="userId"
+                  label="UserID"
+                  autoFocus
+                  value={userId}
+                  onChange={(x) => setUserId(x.target.value)}
+                  error={!ValidateNumeric(userId as string)}
+                  helperText={!ValidateNumeric(userId as string) && "Only numbers allowed"}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -132,8 +196,8 @@ export const ReservationForm: React.FC = () => {
               </Grid>
             </Grid>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            {modeData.mode == 'create' && 'Submit'}
-            {modeData.mode != 'create' && 'Update'}
+              {modeData.mode == "create" && "Submit"}
+              {modeData.mode != "create" && "Update"}
             </Button>
             <Box mt={3} sx={{ height: 40 }}></Box>
             <Grid spacing={1} container>
@@ -141,9 +205,9 @@ export const ReservationForm: React.FC = () => {
               <Grid width="100%" item></Grid>
             </Grid>
           </Box>
-        <Fade in={loading} unmountOnExit>
-          <CircularProgress sx={{ marginBottom: 20 }} />
-        </Fade>
+          <Fade in={loading} unmountOnExit>
+            <CircularProgress sx={{ marginBottom: 20 }} />
+          </Fade>
         </Box>
       </Container>
     </Box>
