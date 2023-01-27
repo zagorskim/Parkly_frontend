@@ -11,3 +11,11 @@ export const ReservationInquiry = atom({
 		{id: 2, user_id: 2, user_first_name: "Michael", user_last_name: "Jackson", parking_lot_id: 2, parking_lot_address: "Nowowiejska 5", description: "ghjk", start_date: new Date(2023, 0, 14), end_date: new Date(2023, 1, 2)}
 	] as ReservationDetails[]
 })
+
+export const ReservationFormMode = atom({
+	key: 'ReservationFormMode',
+	default: {
+		mode: 'create',
+		data: {} as ReservationDetails,
+	}
+})

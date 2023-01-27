@@ -1,15 +1,15 @@
 import Box from '@mui/material/Box';
-import { UserLogged } from '../data/AppModeData';
 import { useRecoilState } from 'recoil';
 import { ReservationList } from './ReservationList';
+import { UserData } from './../data/UserData';
 
 export const LoggedPage: React.FC = () => {
 
-    const [userLogged, setUserLogged] = useRecoilState(UserLogged);
+    const [userLogged, setUserLogged] = useRecoilState(UserData);
 
     return (
         <Box>
-            <p><b>User type:</b> {userLogged}</p>
+            <p><b>User type:</b> {userLogged.accountType}</p>
         </Box>
     )
 }  

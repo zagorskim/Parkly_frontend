@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import { UserLogged, UserToken } from '../data/AppModeData';
 import { UserData } from "./../data/UserData";
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import Container from "@mui/material/Container";
@@ -29,19 +28,19 @@ import { ValidateLettersAndNumbers } from '../data/HelperFunctions';
 import { CREATE_USER_ENDPOINT_ADDRESS } from '../ConnectionVariables';
 
 export const UserForm: React.FC = () => {
+  const [userLogged, setUserLogged] = useRecoilState(UserData);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useRecoilState(UserToken);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setErrorMessage("");
     setLoading(true);
     event.preventDefault();
     const config = {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${userLogged.token}` },
     };
     axios.post(CREATE_USER_ENDPOINT_ADDRESS, {
       // TEMPORARILY RAND UNTIL ID WON'T BE REQUIRED IN THE ENDPOINT
