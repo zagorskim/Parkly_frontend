@@ -16,3 +16,13 @@ export const ParkingLotFormMode = atom({
 		data: {} as ParkingLotDetails,
 	}
 })
+
+export const AllParkingLots = atom({
+	key: 'AllParkingLots',
+	default: [] as ParkingLotDetails[],
+})
+
+export const RefreshParkingLots = atom({
+	key: 'RefreshParkingLots',
+	default: false,
+})

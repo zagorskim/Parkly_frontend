@@ -16,8 +16,8 @@ import { FETCH_USER_DATA_ENDPOINT_ADDRESS } from "./ConnectionVariables";
 import { useRecoilState } from "recoil";
 import { UserData } from "./data/UserData";
 import axios from "axios";
-import { UserDetails } from './data/Types';
-import { ProfilePage } from './components/ProfilePage';
+import { UserDetails } from "./data/Types";
+import { ProfilePage } from "./components/ProfilePage";
 
 function App() {
   const [userLogged, setUserLogged] = useRecoilState(UserData);
@@ -51,6 +51,7 @@ function App() {
 
   return (
     <div className="App">
+      <div style={{ height: 110 }} />
       <NavBar />
       <Routes>
         <Route path="/" element={<SessionChoicePage />} />

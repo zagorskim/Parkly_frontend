@@ -68,7 +68,7 @@ export const LoginPage: React.FC = () => {
     // temporarily hard-coded user
     // TBD: SUCCESSFUL LOGIN REDIRECTION, CONDITION FOR AFFIRMATIVE BACKEND ANSWER TO BE ADDED
   };
-console.log(userLogged);
+  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
