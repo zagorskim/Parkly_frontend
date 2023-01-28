@@ -14,16 +14,28 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ReservationDetails } from '../data/ReservationTypes';
 import { Button } from '@mui/material';
 import { tableCellClasses } from "@mui/material/TableCell";
+import { useRecoilState } from 'recoil';
+import { UserData } from './../data/UserData';
+import axios from 'axios';
+import { CANCEL_RESERVATION_ENDPOINT_ADDRESS } from '../ConnectionVariables';
+import { AllParkingLots } from './../data/ParkingLotData';
+import { ParkingLotDetails } from '../data/ParkingLotTypes';
 
 export function ReservationListRow(props: {reservation: ReservationDetails}) {
 	const reservation = props.reservation;
+    const [userLogged, setUserLogged] = useRecoilState(UserData);
+	const [parkings, setParkings] = useRecoilState(AllParkingLots);
 	const [open, setOpen] = React.useState(false);
-  
-	function dateToString(date: Date): string {
-		const day = date.getDate();
-		const month = date.getMonth() + 1;
-		const year = date.getFullYear();
-		return (day < 10 ? "0" + day : day) + "/" + (month < 10 ? "0" + month : month) + "/" + year;
+
+	const handleCancel = () => {
+		const config = {
+			headers: { Authorization: `Bearer ${userLogged.token}` },
+		  };
+		  axios.delete(CANCEL_RESERVATION_ENDPOINT_ADDRESS + '/' + reservation.reservationId, config).then((res) => {
+			console.log(res);	
+		  }).catch((res) => {
+			console.log(res);
+		  })
 	}
 
 	return (
@@ -38,12 +50,11 @@ export function ReservationListRow(props: {reservation: ReservationDetails}) {
 			  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
 			</IconButton>
 		  </TableCell>
-		<TableCell>{reservation.parking_lot_address}</TableCell>
-		<TableCell>{dateToString(reservation.start_date)}</TableCell>
-		<TableCell>{dateToString(reservation.end_date)}</TableCell>
-		<TableCell>{reservation.user_id}</TableCell>
-		<TableCell><Button variant="outlined">Update</Button></TableCell>
-		<TableCell><Button variant="outlined" color="warning">Cancel</Button></TableCell>
+		<TableCell>{(parkings.find((value) => {return value.id == reservation.parkingId;}) as ParkingLotDetails).name}</TableCell>
+		<TableCell>{reservation.startDate}</TableCell>
+		<TableCell>{reservation.endDate}</TableCell>
+		<TableCell>{reservation.userId}</TableCell>
+		<TableCell ><Button variant="outlined" onClick={handleCancel} color="warning">Cancel</Button></TableCell>
 		</TableRow>
 		<TableRow>
 		  <TableCell style={{ paddingBottom: 5, paddingTop: 5 }} colSpan={12}>
@@ -66,19 +77,11 @@ export function ReservationListRow(props: {reservation: ReservationDetails}) {
 				  <TableHead>
 					<TableRow>
 					  <TableCell align="right">Reservation ID:</TableCell>
-					  <TableCell>{reservation.id}</TableCell>
+					  <TableCell>{reservation.reservationId}</TableCell>
 					</TableRow>
 					<TableRow>
 					  <TableCell align="right">Parking Lot ID:</TableCell>
-					  <TableCell>{reservation.parking_lot_id}</TableCell>
-					</TableRow>
-					<TableRow>
-					  <TableCell align="right">First Name:</TableCell>
-					  <TableCell>{reservation.user_first_name}</TableCell>
-					</TableRow>
-					<TableRow>
-					  <TableCell align="right">Last Name:</TableCell>
-					  <TableCell>{reservation.user_last_name}</TableCell>
+					  <TableCell>{reservation.parkingId}</TableCell>
 					</TableRow>
 					<TableRow>
 					  <TableCell align="right">Description:</TableCell>

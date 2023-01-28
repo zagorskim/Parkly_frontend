@@ -77,10 +77,9 @@ export function ParkingLotListRow(props: { parkingLot: ParkingLotDetails }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{parkingLot.address}</TableCell>
-        <TableCell>{parkingLot.slots_total}</TableCell>
-        <TableCell>{parkingLot.slots_available}</TableCell>
-        <TableCell>{parkingLot.type}</TableCell>
+        <TableCell>{parkingLot.name}</TableCell>
+        <TableCell>{parkingLot.capacity}</TableCell>
+        <TableCell>{parkingLot.parkingLotType}</TableCell>
         <TableCell>
           <Button variant="outlined" onClick={handleUpdate}>
             Update
@@ -88,7 +87,7 @@ export function ParkingLotListRow(props: { parkingLot: ParkingLotDetails }) {
         </TableCell>
         <TableCell>
           <Button variant="outlined" onClick={handleDelete} color="warning">
-            Cancel
+            Delete
           </Button>
         </TableCell>
       </TableRow>
@@ -127,11 +126,11 @@ export function ParkingLotListRow(props: { parkingLot: ParkingLotDetails }) {
                   </TableRow>
                   <TableRow>
                     <TableCell align="right">Price Per Day:</TableCell>
-                    <TableCell>{parkingLot.price_per_day} zł</TableCell>
+                    <TableCell>{parkingLot.pricePerDay} zł</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell align="right">Is Secured:</TableCell>
-                    <TableCell>{parkingLot.security ? "Yes" : "No"} zł</TableCell>
+                    <TableCell>{parkingLot.security ? "Yes" : "No"}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell align="right">Description:</TableCell>

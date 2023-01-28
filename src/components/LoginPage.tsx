@@ -16,7 +16,7 @@ import {
   FETCH_USER_DATA_ENDPOINT_ADDRESS,
 } from "../ConnectionVariables";
 import { useState } from "react";
-import { ValidateLettersAndNumbers, ValidatePassword } from "../data/HelperFunctions";
+import { ValidateLettersAndNumbers, ValidatePassword } from "../data/ValidationFunctions";
 import { UserData } from "./../data/UserData";
 import { UserDetails } from "../data/Types";
 
@@ -68,7 +68,7 @@ export const LoginPage: React.FC = () => {
     // temporarily hard-coded user
     // TBD: SUCCESSFUL LOGIN REDIRECTION, CONDITION FOR AFFIRMATIVE BACKEND ANSWER TO BE ADDED
   };
-  
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
