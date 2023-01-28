@@ -65,7 +65,6 @@ export const ParkingLotForm: React.FC = () => {
     setErrorMessage("");
     setLoading(true);
     event.preventDefault();
-    if (modeData.mode == "create") {
       const config = {
         headers: { Authorization: `Bearer ${userLogged.token}` },
       };
@@ -73,7 +72,7 @@ export const ParkingLotForm: React.FC = () => {
         .put(
           PUT_PARKING_ENDPOINT_ADDRESS,
           {
-            id: -1,
+            id: modeData.mode == 'create' ? -1 : modeData.data.id,
             security: security,
             name: parkingLotName,
             capacity: Number.parseFloat(capacity as string),
@@ -81,7 +80,7 @@ export const ParkingLotForm: React.FC = () => {
             latitude: Number.parseFloat(latitude as string),
             longitude: Number.parseFloat(longitude as string),
             pricePerDay: pricePerDay,
-            type: parkingLotType,
+            parkingLotType: parkingLotType,
             photo: parkingPhoto,
           },
           config
@@ -95,9 +94,6 @@ export const ParkingLotForm: React.FC = () => {
           setErrorMessage("Error occured during adding parking lot");
           setLoading(false);
         });
-    } else {
-      // UPDATE parking lot
-    }
   };
 
   return (
@@ -117,7 +113,8 @@ export const ParkingLotForm: React.FC = () => {
           </Typography>
           <LocalParkingIcon sx={{ marginBottom: "20px", height: "60px", width: "60px" }} />
           <Typography component="h1" variant="h5">
-            Fill parking lot details
+            {modeData.mode == "create" && "Fill parking lot details"}
+            {modeData.mode != "create" && "Update parking lot details"}
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -154,10 +151,9 @@ export const ParkingLotForm: React.FC = () => {
                   required
                   fullWidth
                   id="pricePerDay"
-                  label="Price per day"
+                  label="Price per day (PLN)"
                   name="pricePerDay"
                   value={pricePerDay}
-                  autoFocus
                   onChange={(x) => setPricePerDay(x.target.value)}
                   error={!ValidateNumericFloat(pricePerDay.toString())}
                   helperText={
@@ -175,7 +171,6 @@ export const ParkingLotForm: React.FC = () => {
                   label="Capacity"
                   name="capacity"
                   value={capacity}
-                  autoFocus
                   onChange={(x) => setCapacity(x.target.value)}
                   error={!ValidateNumeric(capacity.toString())}
                   helperText={!ValidateNumeric(capacity.toString()) && "Only numeric values"}
@@ -190,7 +185,6 @@ export const ParkingLotForm: React.FC = () => {
                   label="Latitude"
                   name="latitude"
                   value={latitude}
-                  autoFocus
                   onChange={(x) => setLatitude(x.target.value)}
                   error={!ValidateNumericFloat(latitude.toString())}
                   helperText={
@@ -209,7 +203,6 @@ export const ParkingLotForm: React.FC = () => {
                   label="Longitude"
                   name="longitude"
                   value={longitude}
-                  autoFocus
                   onChange={(x) => setLongitude(x.target.value)}
                   error={!ValidateNumericFloat(longitude.toString())}
                   helperText={

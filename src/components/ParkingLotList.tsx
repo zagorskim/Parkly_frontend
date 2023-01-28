@@ -14,16 +14,28 @@ import { ParkingLotListRow } from './ParkingLotListRow';
 import TextField from '@mui/material/TextField';
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
-import { ParkingLotInquiry } from '../data/ParkingLotData';
+import { ParkingLotInquiry, RefreshParkingLots } from '../data/ParkingLotData';
+import { ParkingLotDetails } from '../data/ParkingLotTypes';
 
 export const ParkingLotList: React.FC = () => {
     const [list, setList] = useRecoilState(ParkingLotInquiry);
+	const [refresh, setRefresh] = useRecoilState(RefreshParkingLots);
 	const [isLoading, setIsLoading] = useState(true);
+
+	const fetchData = () => {
+		// GET parkings logic
+		setList([
+			{id: 1, address: "Marszałkowska 1", slots_total: 200, slots_available: 50, description: "oweijofiwe", latitude: 52.432, longitude: 21.123, price_per_day: 30, type: "Wielopoziomowy", security: true},
+		] as ParkingLotDetails[]);
+		console.log(list);
+		setIsLoading(false);
+	  }
+	
 
 	useEffect(() => {
 		console.log(list);
-		setIsLoading(false);
-	});
+		fetchData();
+	}, [refresh]);
 
     return (
         <Container component="main">
