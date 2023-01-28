@@ -1,13 +1,13 @@
 export interface ParkingLotDetails {
 	id: number,
-	address: string,
-	slots_total: number,
+	name: string,
+	capacity: number,
 	slots_available: number,
 	description: string,
 	latitude: number,
 	longitude: number,
-	price_per_day: number,
-	type: string,
+	pricePerDay: number,
+	parkingLotType: string,
 	security: boolean,
 	photo: string,
 }

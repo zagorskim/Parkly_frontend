@@ -12,15 +12,19 @@ import { ReservationList } from "./components/ReservationList";
 import { ParkingLotList } from "./components/ParkingLotList";
 import { ParkingLotForm } from "./components/ParkingLotForm";
 import { UserForm } from "./components/UserForm";
-import { FETCH_USER_DATA_ENDPOINT_ADDRESS } from "./ConnectionVariables";
-import { useRecoilState } from "recoil";
+import { FETCH_USER_DATA_ENDPOINT_ADDRESS, GET_PARKINGS_PAGE_ENDPOINT_ADDRESS, GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from './ConnectionVariables';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { UserData } from "./data/UserData";
 import axios from "axios";
 import { UserDetails } from "./data/Types";
 import { ProfilePage } from "./components/ProfilePage";
+import { AllParkingLots } from './data/ParkingLotData';
+import { AllReservations } from './data/ReservationData';
 
 function App() {
   const [userLogged, setUserLogged] = useRecoilState(UserData);
+  const [parkings, setParkings] = useRecoilState(AllParkingLots);
+  const [reservations, setReservations] = useRecoilState(AllReservations);
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
@@ -32,7 +36,6 @@ function App() {
       axios
         .get(FETCH_USER_DATA_ENDPOINT_ADDRESS, config)
         .then((res) => {
-          console.log(res);
           setUserLogged({
             token: sessionStorage.getItem("token"),
             accountType: res.data.userType,
@@ -43,6 +46,17 @@ function App() {
         .catch((res) => {
           console.log(res);
         });
+        axios.get(GET_PARKINGS_PAGE_ENDPOINT_ADDRESS + '/-1' + '/sortDescending/true', config).then((res) => {
+          console.log(res);
+          setParkings(res.data.parkingLotsDto);
+        }).catch((res) => {
+          console.log(res);
+        })
+        axios.get(GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS + '/1', config).then((res) => {
+          console.log(res);
+        }).catch((res) => {
+          console.log(res);
+        })
     } else {
       navigate("/");
     }

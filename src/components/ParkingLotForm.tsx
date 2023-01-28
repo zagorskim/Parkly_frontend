@@ -17,7 +17,7 @@ import {
   ValidateEmail,
   ValidateDates,
   ValidatePassword,
-} from "../data/HelperFunctions";
+} from "../data/ValidationFunctions";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
 import { CircularProgress, Fade, FormControlLabel, Stack } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -44,20 +44,20 @@ export const ParkingLotForm: React.FC = () => {
     modeData.mode == "create" ? "" : modeData.data.description
   );
   const [pricePerDay, setPricePerDay] = useState(
-    modeData.mode == "create" ? "" : modeData.data.price_per_day
+    modeData.mode == "create" ? "" : modeData.data.pricePerDay
   );
   const [parkingLotType, setParkingLotType] = useState(
-    modeData.mode == "create" ? Object.values(ParkingLotTypes)[0].toString() : modeData.data.type
+    modeData.mode == "create" ? Object.values(ParkingLotTypes)[0].toString() : modeData.data.parkingLotType
   );
   const [parkingPhoto, setParkingPhoto] = useState(
     "sgfd"
     //modeData.mode == "create" ? ({} as File) : ({ name: "previousPhoto.extention" } as File)
   );
   const [parkingLotName, setParkingLotName] = useState(
-    modeData.mode == "create" ? "" : modeData.data.address
+    modeData.mode == "create" ? "" : modeData.data.name
   );
   const [capacity, setCapacity] = useState(
-    modeData.mode == "create" ? "" : modeData.data.slots_total
+    modeData.mode == "create" ? "" : modeData.data.capacity
   );
   const [security, setSecurity] = useState(modeData.mode == "create" ? "" : modeData.data.security);
 
@@ -155,9 +155,9 @@ export const ParkingLotForm: React.FC = () => {
                   name="pricePerDay"
                   value={pricePerDay}
                   onChange={(x) => setPricePerDay(x.target.value)}
-                  error={!ValidateNumericFloat(pricePerDay.toString())}
+                  error={!ValidateNumericFloat(pricePerDay as string)}
                   helperText={
-                    !ValidateNumericFloat(pricePerDay.toString()) &&
+                    !ValidateNumericFloat(pricePerDay as string) &&
                     "Only numeric values separated with '.' (NNNN.NNNN)"
                   }
                 />
@@ -172,8 +172,8 @@ export const ParkingLotForm: React.FC = () => {
                   name="capacity"
                   value={capacity}
                   onChange={(x) => setCapacity(x.target.value)}
-                  error={!ValidateNumeric(capacity.toString())}
-                  helperText={!ValidateNumeric(capacity.toString()) && "Only numeric values"}
+                  error={!ValidateNumeric(capacity as string)}
+                  helperText={!ValidateNumeric(capacity as string) && "Only numeric values"}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -186,9 +186,9 @@ export const ParkingLotForm: React.FC = () => {
                   name="latitude"
                   value={latitude}
                   onChange={(x) => setLatitude(x.target.value)}
-                  error={!ValidateNumericFloat(latitude.toString())}
+                  error={!ValidateNumericFloat(latitude as string)}
                   helperText={
-                    !ValidateNumericFloat(latitude.toString()) &&
+                    !ValidateNumericFloat(latitude as string) &&
                     "Only numeric values separated with '.' (NNNN.NNNN)"
                   }
                 />
@@ -204,9 +204,9 @@ export const ParkingLotForm: React.FC = () => {
                   name="longitude"
                   value={longitude}
                   onChange={(x) => setLongitude(x.target.value)}
-                  error={!ValidateNumericFloat(longitude.toString())}
+                  error={!ValidateNumericFloat(longitude as string)}
                   helperText={
-                    !ValidateNumericFloat(longitude.toString()) &&
+                    !ValidateNumericFloat(longitude as string) &&
                     "Only numeric values separated with dot '.' (NNNN.NNNN)"
                   }
                 />
