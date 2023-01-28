@@ -17,7 +17,7 @@ import {
   ValidateEmail,
   ValidateDates,
   ValidatePassword,
-} from "../data/HelperFunctions";
+} from "../data/ValidationFunctions";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import { CircularProgress, Fade, Stack } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -29,28 +29,23 @@ import { ReservationFormMode } from "../data/ReservationData";
 import { ParkingLotInquiry } from "../data/ParkingLotData";
 import { ParkingLotDetails } from "../data/ParkingLotTypes";
 import { PUT_RESERVATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
+import { AllParkingLots } from './../data/ParkingLotData';
 
 export const ReservationForm: React.FC = () => {
   const [modeData, setModeData] = useRecoilState(ReservationFormMode);
-  const [parkingLots, setParkingLots] = useRecoilState(ParkingLotInquiry);
+  const [parkingLots, setParkingLots] = useRecoilState(AllParkingLots);
   const [userLogged, setUserLogged] = useRecoilState(UserData);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(
     modeData.mode == "create"
       ? "01/01/2023"
-      : modeData.data.start_date.getDay().toString() +
-          "/" +
-          modeData.data.start_date.getMonth().toString() +
-          modeData.data.start_date.getFullYear().toString()
+      : modeData.data.startDate
   );
   const [endDate, setEndDate] = useState(
     modeData.mode == "create"
       ? "01/02/2023"
-      : modeData.data.end_date.getDay().toString() +
-          "/" +
-          modeData.data.end_date.getMonth().toString() +
-          modeData.data.end_date.getFullYear().toString()
+      : modeData.data.endDate
   );
   const [description, setDescription] = useState(
     modeData.mode == "create" ? "" : modeData.data.description
@@ -58,46 +53,58 @@ export const ReservationForm: React.FC = () => {
   const [parkingLot, setParkingLot] = useState(
     modeData.mode == "create"
       ? ({} as ParkingLotDetails)
-      : parkingLots[modeData.data.parking_lot_id]
+      : parkingLots[modeData.data.parkingId]
   );
-  const [userId, setUserId] = useState(modeData.mode == "create" ? "" : modeData.data.id);
+  const [userId, setUserId] = useState(modeData.mode == "create" ? "" : modeData.data.parkingId);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setErrorMessage("");
     setLoading(true);
     event.preventDefault();
-    if (modeData.mode == "create") {
-      const config = {
-        headers: { Authorization: `Bearer ${userLogged.token}` },
-      };
-      const start = new Date(startDate);
-      console.log(start.getUTCMonth())
-      const end = new Date(endDate);
-      axios
-        .put(
-          PUT_RESERVATION_ENDPOINT_ADDRESS,
-          {
-            reservationId: -1,
-            description: description,
-            userId: Number.parseInt(userId as string),
-            parkingId: parkingLot.id,
-            startDate: start.getFullYear().toString() + '-' + ((start.getUTCMonth() + 1) < 10 ? '0' + (start.getUTCMonth() + 1).toString() : start.getUTCMonth() + 1).toString() + '-' + start.getUTCDate().toString(),
-            endDate:  end.getFullYear().toString() + '-' + ((end.getUTCMonth() + 1) < 10 ? '0' + (end.getUTCMonth() + 1).toString() : end.getUTCMonth() + 1).toString() + '-' + end.getUTCDate().toString(),
-          },
-          config
-        )
-        .then((res) => {
-          console.log(res);
-          setLoading(false);
-        })
-        .catch((res) => {
-          console.log(res);
-          setErrorMessage("Error occured during creating reservation");
-          setLoading(false);
-        });
-    } else {
-      // UPDATE reservation
-    }
+    const config = {
+      headers: { Authorization: `Bearer ${userLogged.token}` },
+    };
+    const start = new Date(startDate);
+    console.log(start.getUTCMonth());
+    const end = new Date(endDate);
+    axios
+      .put(
+        PUT_RESERVATION_ENDPOINT_ADDRESS,
+        {
+          reservationId: -1,
+          description: description,
+          userId: Number.parseInt(userId as string),
+          parkingId: parkingLot.id,
+          startDate:
+            start.getFullYear().toString() +
+            "-" +
+            (start.getUTCMonth() + 1 < 10
+              ? "0" + (start.getUTCMonth() + 1).toString()
+              : start.getUTCMonth() + 1
+            ).toString() +
+            "-" +
+            start.getUTCDate().toString(),
+          endDate:
+            end.getFullYear().toString() +
+            "-" +
+            (end.getUTCMonth() + 1 < 10
+              ? "0" + (end.getUTCMonth() + 1).toString()
+              : end.getUTCMonth() + 1
+            ).toString() +
+            "-" +
+            end.getUTCDate().toString(),
+        },
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+      })
+      .catch((res) => {
+        console.log(res);
+        setErrorMessage("Error occured during creating reservation");
+        setLoading(false);
+      });
   };
 
   return (
@@ -129,12 +136,16 @@ export const ReservationForm: React.FC = () => {
                   fullWidth
                   id="jobType"
                   options={parkingLots.map((x, index) => {
-                    return x.address;
+                    return x.name;
                   })}
                   renderInput={(params) => <TextField {...params} label="Parking Lot" />}
-                  value={parkingLot.address != undefined ? parkingLots[parkingLot.id].address : ''}
+                  value={parkingLot != null ? parkingLot.name : ""}
                   onChange={(event, value) => {
-                    setParkingLot(parkingLots.find((x) => {return x.address == value;}) as ParkingLotDetails);
+                    setParkingLot(
+                      parkingLots.find((x) => {
+                        return x.name== value;
+                      }) as ParkingLotDetails
+                    );
                   }}
                 />
               </Grid>

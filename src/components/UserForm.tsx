@@ -17,14 +17,14 @@ import {
   ValidateEmail,
   ValidateDates,
   ValidatePassword,
-} from "../data/HelperFunctions";
+} from "../data/ValidationFunctions";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import { CircularProgress, Fade, Stack } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import Person2Icon from "@mui/icons-material/Person2";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { ValidateLettersAndNumbers } from '../data/HelperFunctions';
+import { ValidateLettersAndNumbers } from '../data/ValidationFunctions';
 import { CREATE_USER_ENDPOINT_ADDRESS } from '../ConnectionVariables';
 
 export const UserForm: React.FC = () => {
