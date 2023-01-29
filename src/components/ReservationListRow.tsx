@@ -70,7 +70,7 @@ export function ReservationListRow(props: { reservation: ReservationDetails }) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 5, paddingTop: 5 }} colSpan={12}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 3 }}>
               <Typography variant="h6" gutterBottom component="div" align="center">
