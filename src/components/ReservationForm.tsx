@@ -28,8 +28,8 @@ import { width } from "@mui/system";
 import { ReservationFormMode } from "../data/ReservationData";
 import { ParkingLotInquiry } from "../data/ParkingLotData";
 import { ParkingLotDetails } from "../data/ParkingLotTypes";
-import { PUT_RESERVATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
-import { AllParkingLots } from './../data/ParkingLotData';
+import { PUT_RESERVATION_ENDPOINT_ADDRESS as POST_RESERVATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
+import { AllParkingLots } from "./../data/ParkingLotData";
 
 export const ReservationForm: React.FC = () => {
   const [modeData, setModeData] = useRecoilState(ReservationFormMode);
@@ -38,22 +38,16 @@ export const ReservationForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(
-    modeData.mode == "create"
-      ? "01/01/2023"
-      : modeData.data.startDate
+    modeData.mode == "create" ? "01/01/2023 12:00:00" : modeData.data.startDate
   );
   const [endDate, setEndDate] = useState(
-    modeData.mode == "create"
-      ? "01/02/2023"
-      : modeData.data.endDate
+    modeData.mode == "create" ? "01/02/2023 16:00:00" : modeData.data.endDate
   );
   const [description, setDescription] = useState(
     modeData.mode == "create" ? "" : modeData.data.description
   );
   const [parkingLot, setParkingLot] = useState(
-    modeData.mode == "create"
-      ? ({} as ParkingLotDetails)
-      : parkingLots[modeData.data.parkingId]
+    modeData.mode == "create" ? ({} as ParkingLotDetails) : parkingLots[modeData.data.parkingId]
   );
   const [userId, setUserId] = useState(modeData.mode == "create" ? "" : modeData.data.parkingId);
 
@@ -65,11 +59,10 @@ export const ReservationForm: React.FC = () => {
       headers: { Authorization: `Bearer ${userLogged.token}` },
     };
     const start = new Date(startDate);
-    console.log(start.getUTCMonth());
     const end = new Date(endDate);
     axios
-      .put(
-        PUT_RESERVATION_ENDPOINT_ADDRESS,
+      .post(
+        POST_RESERVATION_ENDPOINT_ADDRESS,
         {
           reservationId: -1,
           description: description,
@@ -83,7 +76,9 @@ export const ReservationForm: React.FC = () => {
               : start.getUTCMonth() + 1
             ).toString() +
             "-" +
-            start.getUTCDate().toString(),
+            (start.getUTCDate() < 10
+              ? "0" + start.getUTCDate().toString()
+              : start.getUTCDate().toString()),
           endDate:
             end.getFullYear().toString() +
             "-" +
@@ -92,7 +87,9 @@ export const ReservationForm: React.FC = () => {
               : end.getUTCMonth() + 1
             ).toString() +
             "-" +
-            end.getUTCDate().toString(),
+            (end.getUTCDate() < 10
+              ? "0" + end.getUTCDate().toString()
+              : end.getUTCDate().toString()),
         },
         config
       )
@@ -102,7 +99,12 @@ export const ReservationForm: React.FC = () => {
       })
       .catch((res) => {
         console.log(res);
-        setErrorMessage("Error occured during creating reservation");
+        if(res.response.status == 409) {
+          setErrorMessage('No available parking slot left')
+        }
+        else {
+          setErrorMessage("Error occured during creating reservation");
+        }
         setLoading(false);
       });
   };
@@ -143,7 +145,7 @@ export const ReservationForm: React.FC = () => {
                   onChange={(event, value) => {
                     setParkingLot(
                       parkingLots.find((x) => {
-                        return x.name== value;
+                        return x.name == value;
                       }) as ParkingLotDetails
                     );
                   }}
