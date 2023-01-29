@@ -108,7 +108,7 @@ export const ReservationForm: React.FC = () => {
         setLoading(false);
       });
   };
-
+  console.log(parkingLots);
   return (
     <Box>
       <Container component="main" maxWidth="sm">
