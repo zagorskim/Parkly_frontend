@@ -14,14 +14,14 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ParkingLotDetails } from "../data/ParkingLotTypes";
 import { Button } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { Dialog } from "@mui/material";
 import { ParkingLotForm } from "./ParkingLotForm";
 import { useRecoilState } from "recoil";
-import { ParkingLotFormMode, ParkingLotInquiry, RefreshParkingLots } from '../data/ParkingLotData';
-import { UserData } from './../data/UserData';
-import axios from 'axios';
-import { DELETE_PARKING_ENDPOINT_ADDRESS } from '../ConnectionVariables';
+import { ParkingLotFormMode, ParkingLotInquiry, RefreshParkingLots } from "../data/ParkingLotData";
+import { UserData } from "./../data/UserData";
+import axios from "axios";
+import { DELETE_PARKING_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 
 export function ParkingLotListRow(props: { parkingLot: ParkingLotDetails }) {
   const parkingLot = props.parkingLot;
@@ -46,16 +46,19 @@ export function ParkingLotListRow(props: { parkingLot: ParkingLotDetails }) {
   };
 
   const handleDelete = () => {
-	const config = {
-        headers: { Authorization: `Bearer ${userLogged.token}` },
-      };
-	  axios.delete(DELETE_PARKING_ENDPOINT_ADDRESS + '/' + parkingLot.id, config).then((res) => {
-		console.log(res);
-	  }).catch((res) => {
-		console.log(res);
-	  })
-	  setList([]);
-	  setRefresh(!refresh);  
+    const config = {
+      headers: { Authorization: `Bearer ${userLogged.token}` },
+    };
+    axios
+      .delete(DELETE_PARKING_ENDPOINT_ADDRESS + "/" + parkingLot.id, config)
+      .then((res) => {
+        console.log(res);
+        setList([]);
+        setRefresh(!refresh);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   const handleClose = () => {
@@ -64,7 +67,7 @@ export function ParkingLotListRow(props: { parkingLot: ParkingLotDetails }) {
       mode: "create",
       data: {} as ParkingLotDetails,
     });
-};
+  };
 
   return (
     <React.Fragment>
