@@ -57,16 +57,13 @@ export const LoginPage: React.FC = () => {
           })
           .catch((res) => {
             console.log(res);
-            setErrorMessage("Error occured during fetching user data")
+            setErrorMessage("Error occured during fetching user data");
           });
       })
       .catch((res) => {
         console.log(res);
-        setErrorMessage("Wrong credentials")
+        setErrorMessage("Wrong credentials");
       });
-    // TBD: REST POST AND USER DETAILS GET TO BE IMPLEMENTED, SETTING USER DETAILS TO STATE
-    // temporarily hard-coded user
-    // TBD: SUCCESSFUL LOGIN REDIRECTION, CONDITION FOR AFFIRMATIVE BACKEND ANSWER TO BE ADDED
   };
 
   return (
@@ -118,25 +115,10 @@ export const LoginPage: React.FC = () => {
               "Password too weak (must be at least 8-character long and contain one lower case letter, one upper case letter, one number and one special character)"
             }
           />
-          {/* <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
-                    /> */}
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
-          <Grid spacing={1} container>
-            {/* <Grid item xs>
-                        <Link href="#" variant="body2">
-                        Forgot password?
-                        </Link>
-                    </Grid> */}
-            {/* <Grid width='100%' item>
-                        <Link href="register" variant="body2">
-                        {"Don't have an account? Sign Up"}
-                        </Link>
-                    </Grid> */}
-          </Grid>
+          <Grid spacing={1} container></Grid>
         </Box>
       </Box>
     </Container>

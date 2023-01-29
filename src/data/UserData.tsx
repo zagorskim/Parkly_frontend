@@ -6,3 +6,8 @@ export const UserData = atom({
     // default: {name: 'name', surname: 'surname', accountType: 'simple'} as UserDetails,
     default: {} as UserDetails,
 })
+
+export const TokenRefreshed = atom({
+    key: 'TokenRefreshed',
+    default: false,
+})
