@@ -19,6 +19,7 @@ import axios from "axios";
 import { UserData } from "./../data/UserData";
 import { GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { ValidateLettersAndNumbers } from './../data/ValidationFunctions';
+import Pagination from '@mui/material/Pagination';
 
 export const ReservationList: React.FC = () => {
   const [list, setList] = useRecoilState(ReservationInquiry);
@@ -50,6 +51,11 @@ export const ReservationList: React.FC = () => {
       });
     console.log(list);
   };
+
+  const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
+	setCurrentPage(value);
+	fetchData();
+  }
 
   useEffect(() => {
     fetchData();
@@ -114,6 +120,7 @@ export const ReservationList: React.FC = () => {
                 </TableBody>
               </Table>
             </Box>
+			<Pagination count={pages} page={currentPage} onChange={changePage}/>
           </TableContainer>
         )}
       </Box>
