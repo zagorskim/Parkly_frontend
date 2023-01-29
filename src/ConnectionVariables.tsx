@@ -1,5 +1,5 @@
 export const AUTHENTICATION_ENDPOINT_ADDRESS = 'https://parkly-backend.azurewebsites.net/authenticate';
-export const CREATE_USER_ENDPOINT_ADDRESS = 'https://parkly-backend.azurewebsites.net/users/create';
+export const CREATE_USER_ENDPOINT_ADDRESS = 'https://parkly-backend.azurewebsites.net/users/createOrUpdate';
 export const FETCH_USER_DATA_ENDPOINT_ADDRESS = 'https://parkly-backend.azurewebsites.net/users/getCurrent';
 export const PUT_RESERVATION_ENDPOINT_ADDRESS = 'https://parkly-backend.azurewebsites.net/reservations/createOrUpdate';
 export const CANCEL_RESERVATION_ENDPOINT_ADDRESS = 'https://parkly-backend.azurewebsites.net/reservations/cancel';
