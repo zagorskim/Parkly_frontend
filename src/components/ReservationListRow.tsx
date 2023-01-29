@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ReservationDetails } from "../data/ReservationTypes";
-import { Button } from "@mui/material";
+import { Button, setRef } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { useRecoilState } from "recoil";
 import { UserData } from "./../data/UserData";
@@ -20,11 +20,13 @@ import axios from "axios";
 import { CANCEL_RESERVATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { AllParkingLots } from "./../data/ParkingLotData";
 import { ParkingLotDetails } from "../data/ParkingLotTypes";
+import { RefreshReservations } from '../data/ReservationData';
 
 export function ReservationListRow(props: { reservation: ReservationDetails }) {
   const reservation = props.reservation;
   const [userLogged, setUserLogged] = useRecoilState(UserData);
   const [parkings, setParkings] = useRecoilState(AllParkingLots);
+  const [refresh, setRefresh] = useRecoilState(RefreshReservations);
   const [open, setOpen] = React.useState(false);
 
   const handleCancel = () => {
@@ -35,6 +37,7 @@ export function ReservationListRow(props: { reservation: ReservationDetails }) {
       .delete(CANCEL_RESERVATION_ENDPOINT_ADDRESS + "/" + reservation.reservationId, config)
       .then((res) => {
         console.log(res);
+        setRefresh(!refresh);
       })
       .catch((res) => {
         console.log(res);
