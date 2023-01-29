@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { useRecoilState } from "recoil";
-import { CircularProgress, Stack } from "@mui/material";
+import { CircularProgress, Stack, Switch, Fade } from '@mui/material';
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Table from "@mui/material/Table";
@@ -19,7 +19,8 @@ import { ParkingLotDetails } from "../data/ParkingLotTypes";
 import axios from "axios";
 import { GET_PARKINGS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { UserData } from "./../data/UserData";
-import { ValidateLetters, ValidateLettersAndNumbers } from '../data/ValidationFunctions';
+import { ValidateLetters, ValidateLettersAndNumbers } from "../data/ValidationFunctions";
+import Grid from "@mui/material/Grid";
 
 export const ParkingLotList: React.FC = () => {
   const [list, setList] = useRecoilState(ParkingLotInquiry);
@@ -60,31 +61,30 @@ export const ParkingLotList: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(list);
-    fetchData();
-  }, [refresh, filter]);
+    if (ValidateLettersAndNumbers(filter)) {
+      setList([]);
+      console.log(list);
+      setIsLoading(true);
+      fetchData();
+    }
+  }, [refresh, filter, sortDescending]);
 
   return (
     <Container component="main">
       <CssBaseline />
 
       <Box mt={5} display="flex" justifyContent="center" alignItems="center">
-        {isLoading && (
-          <Box mt={30}>
-            <CircularProgress />
-          </Box>
-        )}
-        {isLoading || (
-          <TableContainer style={{ padding: "30px" }}>
+        <TableContainer style={{ padding: "30px" }}>
+          <Stack spacing={2} direction="column">
             <TextField
               id="outlined-search"
               value={filter}
               onChange={(x) => setFilter(x.target.value)}
-              label="Search parking lots"
+              label="Search parking lots by address"
               type="search"
               fullWidth
-			  error={!ValidateLettersAndNumbers(filter)}
-			  helperText={!ValidateLettersAndNumbers(filter) && "Only letters and numbers allowed"}
+              error={!ValidateLettersAndNumbers(filter)}
+              helperText={!ValidateLettersAndNumbers(filter) && "Only letters and numbers allowed"}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
@@ -93,36 +93,60 @@ export const ParkingLotList: React.FC = () => {
                 ),
               }}
             />
-            <Box mt={5}>
-              <Table>
-                <colgroup>
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "25%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "10%" }} />
-                </colgroup>
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell>Parking Lot Address</TableCell>
-                    <TableCell>Slots Total</TableCell>
-                    <TableCell>Type</TableCell>
-                    <TableCell>{}</TableCell>
-                    <TableCell>{}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {list.map((parkingLot) => (
-                    <ParkingLotListRow parkingLot={parkingLot} />
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </TableContainer>
-        )}
+            <Grid component="label" container alignItems="center" spacing={1}>
+              <Grid item>Sort ascending</Grid>
+              <Grid item>
+                <Switch
+                  checked={sortDescending} // relevant state for your case
+                  onChange={(x) => setSortDesctnding(x.target.checked)} // relevant method to handle your change
+                  value={sortDescending} // some value you need
+                />
+              </Grid>
+              <Grid item>Sort descending</Grid>
+            </Grid>
+          </Stack>
+          <Box mt={5}>
+            <Table>
+              <colgroup>
+                <col style={{ width: "10%" }} />
+                <col style={{ width: "25%" }} />
+                <col style={{ width: "15%" }} />
+                <col style={{ width: "15%" }} />
+                <col style={{ width: "15%" }} />
+                <col style={{ width: "10%" }} />
+                <col style={{ width: "10%" }} />
+              </colgroup>
+              <TableHead>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell>Parking Lot Address</TableCell>
+                  <TableCell>Slots Total</TableCell>
+                  <TableCell>Type</TableCell>
+                  <TableCell>{}</TableCell>
+                  <TableCell>{}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {list.map((parkingLot) => (
+                  <ParkingLotListRow parkingLot={parkingLot} />
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        </TableContainer>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          marginTop: 3,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Fade in={isLoading} unmountOnExit>
+          <CircularProgress sx={{ marginBottom: 20 }} />
+        </Fade>
       </Box>
     </Container>
   );
