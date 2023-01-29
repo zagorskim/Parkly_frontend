@@ -19,6 +19,7 @@ import { Switch } from "@mui/material";
 import axios from "axios";
 import { UserData } from "./../data/UserData";
 import { GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
+import Pagination from '@mui/material/Pagination';
 import { ValidateLettersAndNumbers } from "./../data/ValidationFunctions";
 import Grid from "@mui/material/Grid";
 import { ValidateNumeric } from "../data/ValidationFunctions";
@@ -61,6 +62,11 @@ export const ReservationList: React.FC = () => {
         });
       console.log(list);
   };
+
+  const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
+	setCurrentPage(value);
+	fetchData();
+  }
 
   useEffect(() => {
     if (ValidateNumeric(filter)) {
@@ -124,6 +130,7 @@ export const ReservationList: React.FC = () => {
               </TableBody>
             </Table>
           </Box>
+          			<Pagination count={pages} page={currentPage} onChange={changePage}/>
         </TableContainer>
       </Box>
       <Box mt={3} sx={{ height: 40 }}></Box>

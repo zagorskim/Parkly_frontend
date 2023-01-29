@@ -19,6 +19,7 @@ import { ParkingLotDetails } from "../data/ParkingLotTypes";
 import axios from "axios";
 import { GET_PARKINGS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { UserData } from "./../data/UserData";
+import Pagination from '@mui/material/Pagination';
 import { ValidateLetters, ValidateLettersAndNumbers } from "../data/ValidationFunctions";
 import Grid from "@mui/material/Grid";
 import { TokenRefreshed } from '../data/UserData';
@@ -31,7 +32,7 @@ export const ParkingLotList: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortDescending, setSortDesctnding] = useState(true);
+  const [sortDescending, setSortDescending] = useState(true);
   const [filter, setFilter] = useState("");
 
   const fetchData = () => {
@@ -61,6 +62,11 @@ export const ParkingLotList: React.FC = () => {
       });
     console.log(list);
   };
+
+  const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
+	setCurrentPage(value);
+	fetchData();
+  }
 
   useEffect(() => {
     if (ValidateLettersAndNumbers(filter)) {
@@ -135,6 +141,7 @@ export const ParkingLotList: React.FC = () => {
               </TableBody>
             </Table>
           </Box>
+            <Pagination count={pages} page={currentPage} onChange={changePage}/>
         </TableContainer>
       </Box>
       <Box
