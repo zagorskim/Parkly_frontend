@@ -21,11 +21,13 @@ import { GET_PARKINGS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { UserData } from "./../data/UserData";
 import { ValidateLetters, ValidateLettersAndNumbers } from "../data/ValidationFunctions";
 import Grid from "@mui/material/Grid";
+import { TokenRefreshed } from '../data/UserData';
 
 export const ParkingLotList: React.FC = () => {
   const [list, setList] = useRecoilState(ParkingLotInquiry);
   const [refresh, setRefresh] = useRecoilState(RefreshParkingLots);
   const [userLogged, setUserLogged] = useRecoilState(UserData);
+  const [refreshedToken, setRefreshedToken] = useRecoilState(TokenRefreshed);
   const [isLoading, setIsLoading] = useState(true);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,7 +69,7 @@ export const ParkingLotList: React.FC = () => {
       setIsLoading(true);
       fetchData();
     }
-  }, [refresh, filter, sortDescending]);
+  }, [refreshedToken, refresh, filter, sortDescending]);
 
   return (
     <Container component="main">

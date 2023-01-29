@@ -22,19 +22,20 @@ import { GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { ValidateLettersAndNumbers } from "./../data/ValidationFunctions";
 import Grid from "@mui/material/Grid";
 import { ValidateNumeric } from "../data/ValidationFunctions";
+import { TokenRefreshed } from '../data/UserData';
 
 export const ReservationList: React.FC = () => {
   const [list, setList] = useRecoilState(ReservationInquiry);
   const [isLoading, setIsLoading] = useState(true);
   const [refresh, setRefresh] = useRecoilState(RefreshReservations);
   const [userLogged, setUserLogged] = useRecoilState(UserData);
+  const [refreshedToken, setRefreshedToken] = useRecoilState(TokenRefreshed);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [sortDescending, setSortDesctnding] = useState(true);
 
   const fetchData = () => {
-    if (ValidateNumeric(filter)) {
       setList([]);
       const config = {
         headers: { Authorization: `Bearer ${userLogged.token}` },
@@ -59,14 +60,16 @@ export const ReservationList: React.FC = () => {
           setIsLoading(false);
         });
       console.log(list);
-    }
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchData();
-    console.log(sortDescending);
-  }, [filter, sortDescending]);
+    if (ValidateNumeric(filter)) {
+      setIsLoading(true);
+      fetchData();
+      console.log(sortDescending);
+    }
+    console.log('refreshed')
+  }, [refreshedToken, filter, sortDescending, refresh]);
 
   return (
     <Container component="main">

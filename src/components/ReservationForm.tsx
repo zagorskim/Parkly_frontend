@@ -38,10 +38,10 @@ export const ReservationForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(
-    modeData.mode == "create" ? "01/01/2023" : modeData.data.startDate
+    modeData.mode == "create" ? "01/01/2023 12:00:00" : modeData.data.startDate
   );
   const [endDate, setEndDate] = useState(
-    modeData.mode == "create" ? "01/02/2023" : modeData.data.endDate
+    modeData.mode == "create" ? "01/02/2023 16:00:00" : modeData.data.endDate
   );
   const [description, setDescription] = useState(
     modeData.mode == "create" ? "" : modeData.data.description
@@ -100,7 +100,12 @@ export const ReservationForm: React.FC = () => {
       })
       .catch((res) => {
         console.log(res);
-        setErrorMessage("Error occured during creating reservation");
+        if(res.status == 409) {
+          setErrorMessage('No available parking slot left')
+        }
+        else {
+          setErrorMessage("Error occured during creating reservation");
+        }
         setLoading(false);
       });
   };
@@ -214,7 +219,7 @@ export const ReservationForm: React.FC = () => {
               <Grid width="100%" item></Grid>
             </Grid>
           </Box>
-          <Fade in={!loading} unmountOnExit>
+          <Fade in={loading} unmountOnExit>
             <CircularProgress sx={{ marginBottom: 20 }} />
           </Fade>
         </Box>
