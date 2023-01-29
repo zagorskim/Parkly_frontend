@@ -14,17 +14,18 @@ import { ParkingLotForm } from "./components/ParkingLotForm";
 import { UserForm } from "./components/UserForm";
 import { FETCH_USER_DATA_ENDPOINT_ADDRESS, GET_PARKINGS_PAGE_ENDPOINT_ADDRESS, GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from './ConnectionVariables';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { UserData } from "./data/UserData";
+import { UserData, TokenRefreshed } from './data/UserData';
 import axios from "axios";
 import { UserDetails } from "./data/Types";
 import { ProfilePage } from "./components/ProfilePage";
-import { AllParkingLots } from './data/ParkingLotData';
+import { AllParkingLots, RefreshParkingLots } from './data/ParkingLotData';
 import { AllReservations } from './data/ReservationData';
 
 function App() {
   const [userLogged, setUserLogged] = useRecoilState(UserData);
   const [parkings, setParkings] = useRecoilState(AllParkingLots);
   const [reservations, setReservations] = useRecoilState(AllReservations);
+  const [refreshedToken, setRefreshedToken] = useRecoilState(TokenRefreshed);
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
@@ -42,6 +43,8 @@ function App() {
             username: res.data.username,
             email: res.data.email,
           } as UserDetails);
+        }).then((res) => {
+          setRefreshedToken(!refreshedToken);          
         })
         .catch((res) => {
           console.log(res);
