@@ -11,3 +11,8 @@ export const TokenRefreshed = atom({
     key: 'TokenRefreshed',
     default: false,
 })
+
+export const LoggedFlag = atom({
+    key: 'LoggedFlag',
+    default: false,
+})

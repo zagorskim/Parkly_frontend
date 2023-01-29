@@ -70,7 +70,6 @@ export const ParkingLotList: React.FC = () => {
 
   useEffect(() => {
     if (ValidateLettersAndNumbers(filter)) {
-      setCurrentPage(1);
       setList([]);
       console.log(list);
       setIsLoading(true);
@@ -88,7 +87,10 @@ export const ParkingLotList: React.FC = () => {
             <TextField
               id="outlined-search"
               value={filter}
-              onChange={(x) => setFilter(x.target.value)}
+              onChange={(x) => {
+                setCurrentPage(1);
+                setFilter(x.target.value);
+              }}
               label="Search parking lots by address"
               type="search"
               fullWidth
