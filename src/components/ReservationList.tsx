@@ -66,7 +66,6 @@ export const ReservationList: React.FC = () => {
 
   useEffect(() => {
     if (ValidateNumeric(filter)) {
-      setCurrentPage(1);
       setIsLoading(true);
       fetchData();
       console.log(sortDescending);
@@ -86,7 +85,10 @@ export const ReservationList: React.FC = () => {
             type="search"
             fullWidth
             value={filter}
-            onChange={(x) => setFilter(x.target.value)}
+            onChange={(x) => {
+              setCurrentPage(1);
+              setFilter(x.target.value);
+            }}
             error={!ValidateNumeric(filter)}
             helperText={!ValidateNumeric(filter) && "Only letters and numbers allowed"}
             InputProps={{

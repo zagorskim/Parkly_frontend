@@ -19,11 +19,12 @@ import { useState } from "react";
 import { ValidateLettersAndNumbers, ValidatePassword } from "../data/ValidationFunctions";
 import { UserData } from "./../data/UserData";
 import { UserDetails } from "../data/Types";
-import { TokenRefreshed } from '../data/UserData';
+import { TokenRefreshed, LoggedFlag } from '../data/UserData';
 
 export const LoginPage: React.FC = () => {
   const [userLogged, setUserLogged] = useRecoilState(UserData);
   const [refreshedToken, setRefreshedToken] = useRecoilState(TokenRefreshed);
+  const [logged, setLogged] = useRecoilState(LoggedFlag);
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -55,7 +56,7 @@ export const LoginPage: React.FC = () => {
               email: res.data.email,
             } as UserDetails);
             sessionStorage.setItem("token", token);
-            setRefreshedToken(true);
+            setLogged(true);
             navigate("/home");
           })
           .catch((res) => {
