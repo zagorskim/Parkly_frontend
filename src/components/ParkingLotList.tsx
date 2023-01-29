@@ -31,7 +31,7 @@ export const ParkingLotList: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortDescending, setSortDesctnding] = useState(true);
+  const [sortDescending, setSortDescending] = useState(true);
   const [filter, setFilter] = useState("");
 
   const fetchData = () => {
@@ -100,7 +100,7 @@ export const ParkingLotList: React.FC = () => {
               <Grid item>
                 <Switch
                   checked={sortDescending} // relevant state for your case
-                  onChange={(x) => setSortDesctnding(x.target.checked)} // relevant method to handle your change
+                  onChange={(x) => setSortDescending(x.target.checked)} // relevant method to handle your change
                   value={sortDescending} // some value you need
                 />
               </Grid>
