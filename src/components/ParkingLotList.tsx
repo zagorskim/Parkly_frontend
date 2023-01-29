@@ -24,7 +24,6 @@ import { ValidateLetters, ValidateLettersAndNumbers } from "../data/ValidationFu
 import Grid from "@mui/material/Grid";
 import { TokenRefreshed } from '../data/UserData';
 
-
 export const ParkingLotList: React.FC = () => {
   const [list, setList] = useRecoilState(ParkingLotInquiry);
   const [refresh, setRefresh] = useRecoilState(RefreshParkingLots);
@@ -157,7 +156,6 @@ export const ParkingLotList: React.FC = () => {
         <Fade in={isLoading} unmountOnExit>
           <CircularProgress sx={{ marginBottom: 20 }} />
         </Fade>
-
       </Box>
     </Container>
   );
