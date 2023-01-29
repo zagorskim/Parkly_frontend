@@ -24,7 +24,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { ParkingLotDetails, ParkingLotTypes } from "../data/ParkingLotTypes";
-import { ParkingLotFormMode } from "../data/ParkingLotData";
+import { ParkingLotFormMode, RefreshParkingLots } from '../data/ParkingLotData';
 import { Checkbox } from "@mui/material";
 import { PUT_PARKING_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { width } from "@mui/system";
@@ -32,6 +32,7 @@ import { width } from "@mui/system";
 export const ParkingLotForm: React.FC = () => {
   const [modeData, setModeData] = useRecoilState(ParkingLotFormMode);
   const [userLogged, setUserLogged] = useRecoilState(UserData);
+  const [refresh, setRefresh] = useRecoilState(RefreshParkingLots);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [latitude, setLatitude] = useState(
@@ -87,6 +88,8 @@ export const ParkingLotForm: React.FC = () => {
         )
         .then((res) => {
           console.log(res);
+          setErrorMessage("Parking lot added successfully!");
+          setRefresh(!refresh);
           setLoading(false);
         })
         .catch((res) => {

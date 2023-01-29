@@ -66,6 +66,7 @@ export const ReservationList: React.FC = () => {
 
   useEffect(() => {
     if (ValidateNumeric(filter)) {
+      setCurrentPage(1);
       setIsLoading(true);
       fetchData();
       console.log(sortDescending);

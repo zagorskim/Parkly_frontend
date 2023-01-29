@@ -70,6 +70,7 @@ export const ParkingLotList: React.FC = () => {
 
   useEffect(() => {
     if (ValidateLettersAndNumbers(filter)) {
+      setCurrentPage(1);
       setList([]);
       console.log(list);
       setIsLoading(true);
