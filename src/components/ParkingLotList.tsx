@@ -106,7 +106,7 @@ export const ParkingLotList: React.FC = () => {
               <Grid item>
                 <Switch
                   checked={sortDescending} // relevant state for your case
-                  onChange={(x) => setSortDesctnding(x.target.checked)} // relevant method to handle your change
+                  onChange={(x) => setSortDescending(x.target.checked)} // relevant method to handle your change
                   value={sortDescending} // some value you need
                 />
               </Grid>

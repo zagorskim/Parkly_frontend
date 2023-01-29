@@ -42,7 +42,7 @@ export const UserForm: React.FC = () => {
     const config = {
       headers: { Authorization: `Bearer ${userLogged.token}` },
     };
-    axios.post(CREATE_USER_ENDPOINT_ADDRESS, {
+    axios.put(CREATE_USER_ENDPOINT_ADDRESS, {
       // TEMPORARILY RAND UNTIL ID WON'T BE REQUIRED IN THE ENDPOINT
       id: Math.floor(Math.random() * 10000),
       username: userName,
