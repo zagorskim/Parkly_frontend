@@ -35,6 +35,7 @@ export const ReservationForm: React.FC = () => {
   const [modeData, setModeData] = useRecoilState(ReservationFormMode);
   const [parkingLots, setParkingLots] = useRecoilState(AllParkingLots);
   const [userLogged, setUserLogged] = useRecoilState(UserData);
+  const [refresh, setRefresh] = useRecoilState(RefreshReservations);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(
@@ -95,6 +96,8 @@ export const ReservationForm: React.FC = () => {
       )
       .then((res) => {
         console.log(res);
+        setErrorMessage("Reservation added successfully!");
+        setRefresh(!refresh);
         setLoading(false);
       })
       .catch((res) => {
@@ -108,7 +111,7 @@ export const ReservationForm: React.FC = () => {
         setLoading(false);
       });
   };
-  console.log(parkingLots);
+
   return (
     <Box>
       <Container component="main" maxWidth="sm">
