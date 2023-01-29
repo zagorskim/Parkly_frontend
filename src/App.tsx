@@ -14,7 +14,7 @@ import { ParkingLotForm } from "./components/ParkingLotForm";
 import { UserForm } from "./components/UserForm";
 import { FETCH_USER_DATA_ENDPOINT_ADDRESS, GET_PARKINGS_PAGE_ENDPOINT_ADDRESS, GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from './ConnectionVariables';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { UserData, TokenRefreshed } from './data/UserData';
+import { UserData, TokenRefreshed, LoggedFlag } from './data/UserData';
 import axios from "axios";
 import { UserDetails } from "./data/Types";
 import { ProfilePage } from "./components/ProfilePage";
@@ -26,6 +26,7 @@ function App() {
   const [parkings, setParkings] = useRecoilState(AllParkingLots);
   const [reservations, setReservations] = useRecoilState(AllReservations);
   const [refreshedToken, setRefreshedToken] = useRecoilState(TokenRefreshed);
+  const [logged, setLogged] = useRecoilState(LoggedFlag);
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
@@ -52,6 +53,7 @@ function App() {
         axios.get(GET_PARKINGS_PAGE_ENDPOINT_ADDRESS + '/-1' + '/sortDescending/true', config).then((res) => {
           console.log(res);
           setParkings(res.data.parkingLotsDto);
+          console.log('been there')
         }).catch((res) => {
           console.log(res);
         })
@@ -64,7 +66,7 @@ function App() {
     } else {
       navigate("/");
     }
-  }, [TokenRefreshed]);
+  }, [logged]);
 
   return (
     <div className="App">
