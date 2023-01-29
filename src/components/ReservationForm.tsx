@@ -25,7 +25,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Person2Icon from "@mui/icons-material/Person2";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { width } from "@mui/system";
-import { ReservationFormMode } from "../data/ReservationData";
+import { ReservationFormMode, RefreshReservations } from '../data/ReservationData';
 import { ParkingLotInquiry } from "../data/ParkingLotData";
 import { ParkingLotDetails } from "../data/ParkingLotTypes";
 import { PUT_RESERVATION_ENDPOINT_ADDRESS as POST_RESERVATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
