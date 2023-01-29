@@ -30,7 +30,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token") != null) {
+    if (sessionStorage.getItem("token") != null) {
       const config = {
         headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
       };
@@ -55,16 +55,16 @@ function App() {
         }).catch((res) => {
           console.log(res);
         })
-        axios.get(GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS + '/1', config).then((res) => {
+        axios.get(GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS + '/-1', config).then((res) => {
           console.log(res);
+          setReservations(res.data.reservationsDto)
         }).catch((res) => {
           console.log(res);
         })
     } else {
       navigate("/");
     }
-    console.log(userLogged);
-  }, [userLogged.accountType]);
+  }, [TokenRefreshed]);
 
   return (
     <div className="App">

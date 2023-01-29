@@ -77,7 +77,6 @@ export const NavBar: React.FC = () => {
       sessionStorage.removeItem("token");
       navigate("/");
       setUserLogged({} as UserDetails);
-      //signOut();
   };
 
   let pages = [];
@@ -112,7 +111,7 @@ export const NavBar: React.FC = () => {
           >
             PARKLY
           </Typography>
-          {userLogged.accountType != "BASIC" && userLogged.accountType != "SUPER" && (
+          {userLogged.accountType == "BASIC" || userLogged.accountType == "SUPER" && (
             <Divider
               orientation="vertical"
               variant="middle"
