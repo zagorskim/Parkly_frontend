@@ -59,7 +59,6 @@ export const ReservationForm: React.FC = () => {
       headers: { Authorization: `Bearer ${userLogged.token}` },
     };
     const start = new Date(startDate);
-    console.log(start.getUTCMonth());
     const end = new Date(endDate);
     axios
       .post(
@@ -100,7 +99,7 @@ export const ReservationForm: React.FC = () => {
       })
       .catch((res) => {
         console.log(res);
-        if(res.status == 409) {
+        if(res.response.status == 409) {
           setErrorMessage('No available parking slot left')
         }
         else {
