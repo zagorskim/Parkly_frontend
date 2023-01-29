@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LoginIcon from "@mui/icons-material/LoginOutlined";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import axios from "axios";
 import {
@@ -121,6 +121,7 @@ export const LoginPage: React.FC = () => {
           <Grid spacing={1} container></Grid>
         </Box>
       </Box>
+      <Outlet/>
     </Container>
   );
 };

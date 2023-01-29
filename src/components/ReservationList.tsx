@@ -19,11 +19,11 @@ import { Switch } from "@mui/material";
 import axios from "axios";
 import { UserData } from "./../data/UserData";
 import { GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
-import Pagination from '@mui/material/Pagination';
+import Pagination from "@mui/material/Pagination";
 import { ValidateLettersAndNumbers } from "./../data/ValidationFunctions";
 import Grid from "@mui/material/Grid";
 import { ValidateNumeric } from "../data/ValidationFunctions";
-import { TokenRefreshed } from '../data/UserData';
+import { TokenRefreshed } from "../data/UserData";
 
 export const ReservationList: React.FC = () => {
   const [list, setList] = useRecoilState(ReservationInquiry);
@@ -37,36 +37,32 @@ export const ReservationList: React.FC = () => {
   const [sortDescending, setSortDesctnding] = useState(true);
 
   const fetchData = () => {
-      setList([]);
-      const config = {
-        headers: { Authorization: `Bearer ${userLogged.token}` },
-      };
-      axios
-        .get(
-          GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS +
-            "/" +
-            currentPage.toString() +
-            "?filter=" +
-            filter,
-          config
-        )
-        .then((res) => {
-          console.log(res);
-          setList(res.data.reservationsDto);
-          setPages(res.data.noOfPages);
-          setIsLoading(false);
-        })
-        .catch((res) => {
-          console.log(res);
-          setIsLoading(false);
-        });
-      console.log(list);
+    setList([]);
+    const config = {
+      headers: { Authorization: `Bearer ${userLogged.token}` },
+    };
+    axios
+      .get(
+        GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS + "/" + currentPage.toString() + "?filter=" + filter,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        setList(res.data.reservationsDto);
+        setPages(res.data.noOfPages);
+        setIsLoading(false);
+      })
+      .catch((res) => {
+        console.log(res);
+        setIsLoading(false);
+      });
+    console.log(list);
   };
 
   const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
-	setCurrentPage(value);
-	fetchData();
-  }
+    setCurrentPage(value);
+    fetchData();
+  };
 
   useEffect(() => {
     if (ValidateNumeric(filter)) {
@@ -74,8 +70,8 @@ export const ReservationList: React.FC = () => {
       fetchData();
       console.log(sortDescending);
     }
-    console.log('refreshed')
-  }, [refreshedToken, filter, sortDescending, refresh]);
+    console.log("refreshed");
+  }, [refreshedToken, filter, sortDescending, refresh, currentPage]);
 
   return (
     <Container component="main">
@@ -130,7 +126,7 @@ export const ReservationList: React.FC = () => {
               </TableBody>
             </Table>
           </Box>
-          			<Pagination count={pages} page={currentPage} onChange={changePage}/>
+          <Pagination count={pages} page={currentPage} onChange={changePage} />
         </TableContainer>
       </Box>
       <Box mt={3} sx={{ height: 40 }}></Box>
