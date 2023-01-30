@@ -129,7 +129,7 @@ export const ReservationList: React.FC = () => {
               </TableBody>
             </Table>
           </Box>
-          <Pagination count={pages} page={currentPage} onChange={changePage} />
+          <Pagination style={{marginTop: 10}} count={pages} page={currentPage} onChange={changePage} />
         </TableContainer>
       </Box>
       <Box mt={3} sx={{ height: 40 }}></Box>

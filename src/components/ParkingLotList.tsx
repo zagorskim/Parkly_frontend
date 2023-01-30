@@ -109,7 +109,10 @@ export const ParkingLotList: React.FC = () => {
               <Grid item>
                 <Switch
                   checked={sortDescending} // relevant state for your case
-                  onChange={(x) => setSortDescending(x.target.checked)} // relevant method to handle your change
+                  onChange={(x) => {
+                    setRefresh(!refresh);
+                    setSortDescending(x.target.checked);
+                  }} // relevant method to handle your change
                   value={sortDescending} // some value you need
                 />
               </Grid>
@@ -144,7 +147,12 @@ export const ParkingLotList: React.FC = () => {
               </TableBody>
             </Table>
           </Box>
-          <Pagination count={pages} page={currentPage} onChange={changePage} />
+          <Pagination
+            style={{ marginTop: 10 }}
+            count={pages}
+            page={currentPage}
+            onChange={changePage}
+          />
         </TableContainer>
       </Box>
       <Box
