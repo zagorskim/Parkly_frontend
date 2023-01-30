@@ -2,14 +2,13 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LoginIcon from "@mui/icons-material/LoginOutlined";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import axios from "axios";
 import {
   AUTHENTICATION_ENDPOINT_ADDRESS,
@@ -19,11 +18,10 @@ import { useState } from "react";
 import { ValidateLettersAndNumbers, ValidatePassword } from "../data/ValidationFunctions";
 import { UserData } from "./../data/UserData";
 import { UserDetails } from "../data/Types";
-import { TokenRefreshed, LoggedFlag } from '../data/UserData';
+import { LoggedFlag } from "../data/UserData";
 
 export const LoginPage: React.FC = () => {
   const [userLogged, setUserLogged] = useRecoilState(UserData);
-  const [refreshedToken, setRefreshedToken] = useRecoilState(TokenRefreshed);
   const [logged, setLogged] = useRecoilState(LoggedFlag);
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");

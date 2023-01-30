@@ -1,25 +1,25 @@
-import { atom, selector } from 'recoil';
-import { ReservationDetails } from './ReservationTypes';
+import { atom } from "recoil";
+import { ReservationDetails } from "./ReservationTypes";
 
 export const ReservationInquiry = atom({
-    key: 'ReservationInquiry',
-    default: [] as ReservationDetails[]
-})
+  key: "ReservationInquiry",
+  default: [] as ReservationDetails[],
+});
 
 export const ReservationFormMode = atom({
-	key: 'ReservationFormMode',
-	default: {
-		mode: 'create',
-		data: {} as ReservationDetails,
-	}
-})
+  key: "ReservationFormMode",
+  default: {
+    mode: "create",
+    data: {} as ReservationDetails,
+  },
+});
 
 export const AllReservations = atom({
-	key: 'AllReservations',
-	default: [] as ReservationDetails[],
-})
+  key: "AllReservations",
+  default: [] as ReservationDetails[],
+});
 
 export const RefreshReservations = atom({
-	key: 'RefreshReservations',
-	default: false,
-})
+  key: "RefreshReservations",
+  default: false,
+});

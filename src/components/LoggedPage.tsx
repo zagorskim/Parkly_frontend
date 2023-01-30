@@ -1,14 +1,10 @@
 import Box from "@mui/material/Box";
 import { useRecoilState } from "recoil";
-import { ReservationList } from "./ReservationList";
-import { UserData } from "./../data/UserData";
-import Container from "@mui/material/Container";
 import { Typography, Stack } from "@mui/material";
 import { AllReservations } from "../data/ReservationData";
 import { AllParkingLots } from "../data/ParkingLotData";
 
 export const LoggedPage: React.FC = () => {
-  const [userLogged, setUserLogged] = useRecoilState(UserData);
   const [reservations, setReservations] = useRecoilState(AllReservations);
   const [parkingLots, setParkingLots] = useRecoilState(AllParkingLots);
 

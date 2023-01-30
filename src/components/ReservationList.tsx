@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { useRecoilState } from "recoil";
 import { ReservationInquiry, RefreshReservations } from "../data/ReservationData";
-import { CircularProgress, Stack, Fade } from "@mui/material";
+import { CircularProgress, Fade } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Table from "@mui/material/Table";
@@ -15,13 +15,10 @@ import { ReservationListRow } from "./ReservationListRow";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import { Switch } from "@mui/material";
 import axios from "axios";
 import { UserData } from "./../data/UserData";
 import { GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import Pagination from "@mui/material/Pagination";
-import { ValidateLettersAndNumbers } from "./../data/ValidationFunctions";
-import Grid from "@mui/material/Grid";
 import { ValidateNumeric } from "../data/ValidationFunctions";
 import { TokenRefreshed } from "../data/UserData";
 
@@ -47,16 +44,13 @@ export const ReservationList: React.FC = () => {
         config
       )
       .then((res) => {
-        console.log(res);
         setList(res.data.reservationsDto);
         setPages(res.data.noOfPages);
         setIsLoading(false);
       })
       .catch((res) => {
-        console.log(res);
         setIsLoading(false);
       });
-    console.log(list);
   };
 
   const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -70,7 +64,6 @@ export const ReservationList: React.FC = () => {
       fetchData();
       console.log(sortDescending);
     }
-    console.log("refreshed");
   }, [refreshedToken, filter, sortDescending, refresh, currentPage]);
 
   return (
@@ -129,7 +122,12 @@ export const ReservationList: React.FC = () => {
               </TableBody>
             </Table>
           </Box>
-          <Pagination style={{marginTop: 10}} count={pages} page={currentPage} onChange={changePage} />
+          <Pagination
+            style={{ marginTop: 10 }}
+            count={pages}
+            page={currentPage}
+            onChange={changePage}
+          />
         </TableContainer>
       </Box>
       <Box mt={3} sx={{ height: 40 }}></Box>
