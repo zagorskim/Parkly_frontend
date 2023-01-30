@@ -38,7 +38,6 @@ export const LoginPage: React.FC = () => {
         password: data.get("password"),
       })
       .then((res) => {
-        console.log(res);
         const token = res.data.jwttoken;
         const config = {
           headers: { Authorization: `Bearer ${token}` },
@@ -46,7 +45,6 @@ export const LoginPage: React.FC = () => {
         axios
           .get(FETCH_USER_DATA_ENDPOINT_ADDRESS, config)
           .then((res) => {
-            console.log(res);
             setUserLogged({
               token: token,
               accountType: res.data.userType,
@@ -58,12 +56,10 @@ export const LoginPage: React.FC = () => {
             navigate("/home");
           })
           .catch((res) => {
-            console.log(res);
             setErrorMessage("Error occured during fetching user data");
           });
       })
       .catch((res) => {
-        console.log(res);
         setErrorMessage("Wrong credentials");
       });
   };
