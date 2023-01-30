@@ -3,9 +3,7 @@ import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
@@ -52,13 +50,10 @@ export function ParkingLotListRow(props: { parkingLot: ParkingLotDetails }) {
     axios
       .delete(DELETE_PARKING_ENDPOINT_ADDRESS + "/" + parkingLot.id, config)
       .then((res) => {
-        console.log(res);
         setList([]);
         setRefresh(!refresh);
       })
-      .catch((res) => {
-        console.log(res);
-      });
+      .catch((res) => {});
   };
 
   const handleClose = () => {

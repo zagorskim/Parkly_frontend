@@ -15,12 +15,11 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import { ParkingLotInquiry, RefreshParkingLots } from "../data/ParkingLotData";
-import { ParkingLotDetails } from "../data/ParkingLotTypes";
 import axios from "axios";
 import { GET_PARKINGS_PAGE_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { UserData } from "./../data/UserData";
 import Pagination from "@mui/material/Pagination";
-import { ValidateLetters, ValidateLettersAndNumbers } from "../data/ValidationFunctions";
+import { ValidateLettersAndNumbers } from "../data/ValidationFunctions";
 import Grid from "@mui/material/Grid";
 import { TokenRefreshed } from "../data/UserData";
 
@@ -51,16 +50,13 @@ export const ParkingLotList: React.FC = () => {
         config
       )
       .then((res) => {
-        console.log(res);
         setList(res.data.parkingLotsDto);
         setPages(res.data.noOfPages);
         setIsLoading(false);
       })
       .catch((res) => {
-        console.log(res);
         setIsLoading(false);
       });
-    console.log(list);
   };
 
   const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -71,7 +67,6 @@ export const ParkingLotList: React.FC = () => {
   useEffect(() => {
     if (ValidateLettersAndNumbers(filter)) {
       setList([]);
-      console.log(list);
       setIsLoading(true);
       fetchData();
     }

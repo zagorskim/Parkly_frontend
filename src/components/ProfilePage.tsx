@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 
 export const ProfilePage: React.FC = () => {
   const [userLogged, setUserLogged] = useRecoilState(UserData);
-  
+
   return (
     <Box margin="auto" width="30%">
       <Stack marginTop="100px" spacing={1}>

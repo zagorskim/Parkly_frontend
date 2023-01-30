@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { NavBar } from "./components/NavBar";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -12,14 +11,18 @@ import { ReservationList } from "./components/ReservationList";
 import { ParkingLotList } from "./components/ParkingLotList";
 import { ParkingLotForm } from "./components/ParkingLotForm";
 import { UserForm } from "./components/UserForm";
-import { FETCH_USER_DATA_ENDPOINT_ADDRESS, GET_PARKINGS_PAGE_ENDPOINT_ADDRESS, GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS } from './ConnectionVariables';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { UserData, TokenRefreshed, LoggedFlag } from './data/UserData';
+import {
+  FETCH_USER_DATA_ENDPOINT_ADDRESS,
+  GET_PARKINGS_PAGE_ENDPOINT_ADDRESS,
+  GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS,
+} from "./ConnectionVariables";
+import { useRecoilState } from "recoil";
+import { UserData, TokenRefreshed, LoggedFlag } from "./data/UserData";
 import axios from "axios";
 import { UserDetails } from "./data/Types";
 import { ProfilePage } from "./components/ProfilePage";
-import { AllParkingLots, RefreshParkingLots } from './data/ParkingLotData';
-import { AllReservations } from './data/ReservationData';
+import { AllParkingLots } from "./data/ParkingLotData";
+import { AllReservations } from "./data/ReservationData";
 
 function App() {
   const [userLogged, setUserLogged] = useRecoilState(UserData);
@@ -27,7 +30,6 @@ function App() {
   const [reservations, setReservations] = useRecoilState(AllReservations);
   const [refreshedToken, setRefreshedToken] = useRecoilState(TokenRefreshed);
   const [logged, setLogged] = useRecoilState(LoggedFlag);
-  const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,25 +46,23 @@ function App() {
             username: res.data.username,
             email: res.data.email,
           } as UserDetails);
-        }).then((res) => {
-          setRefreshedToken(!refreshedToken);          
         })
-        .catch((res) => {
-          console.log(res);
-        });
-        axios.get(GET_PARKINGS_PAGE_ENDPOINT_ADDRESS + '/-1' + '/sortDescending/true', config).then((res) => {
-          console.log(res);
+        .then((res) => {
+          setRefreshedToken(!refreshedToken);
+        })
+        .catch((res) => {});
+      axios
+        .get(GET_PARKINGS_PAGE_ENDPOINT_ADDRESS + "/-1" + "/sortDescending/true", config)
+        .then((res) => {
           setParkings(res.data.parkingLotsDto);
-          console.log('been there')
-        }).catch((res) => {
-          console.log(res);
         })
-        axios.get(GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS + '/-1', config).then((res) => {
-          console.log(res);
-          setReservations(res.data.reservationsDto)
-        }).catch((res) => {
-          console.log(res);
+        .catch((res) => {});
+      axios
+        .get(GET_RESERVATIONS_PAGE_ENDPOINT_ADDRESS + "/-1", config)
+        .then((res) => {
+          setReservations(res.data.reservationsDto);
         })
+        .catch((res) => {});
     } else {
       navigate("/");
     }
