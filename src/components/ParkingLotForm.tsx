@@ -4,30 +4,20 @@ import { useRecoilState } from "recoil";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import LoginIcon from "@mui/icons-material/LoginOutlined";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
 import axios from "axios";
-import {
-  ValidateNumeric,
-  ValidateNumericFloat,
-  ValidateLetters,
-  ValidateEmail,
-  ValidateDates,
-  ValidatePassword,
-} from "../data/ValidationFunctions";
+import { ValidateNumeric, ValidateNumericFloat } from "../data/ValidationFunctions";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
 import { CircularProgress, Fade, FormControlLabel, Stack } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { ParkingLotDetails, ParkingLotTypes } from "../data/ParkingLotTypes";
-import { ParkingLotFormMode, RefreshParkingLots } from '../data/ParkingLotData';
+import { ParkingLotTypes } from "../data/ParkingLotTypes";
+import { ParkingLotFormMode, RefreshParkingLots } from "../data/ParkingLotData";
 import { Checkbox } from "@mui/material";
 import { PUT_PARKING_ENDPOINT_ADDRESS } from "../ConnectionVariables";
-import { width } from "@mui/system";
 
 export const ParkingLotForm: React.FC = () => {
   const [modeData, setModeData] = useRecoilState(ParkingLotFormMode);
@@ -35,9 +25,7 @@ export const ParkingLotForm: React.FC = () => {
   const [refresh, setRefresh] = useRecoilState(RefreshParkingLots);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [latitude, setLatitude] = useState(
-    modeData.mode == "create" ? "" : modeData.data.latitude
-  );
+  const [latitude, setLatitude] = useState(modeData.mode == "create" ? "" : modeData.data.latitude);
   const [longitude, setLongitude] = useState(
     modeData.mode == "create" ? "" : modeData.data.longitude
   );
@@ -48,7 +36,9 @@ export const ParkingLotForm: React.FC = () => {
     modeData.mode == "create" ? "" : modeData.data.pricePerDay
   );
   const [parkingLotType, setParkingLotType] = useState(
-    modeData.mode == "create" ? Object.values(ParkingLotTypes)[0].toString() : modeData.data.parkingLotType
+    modeData.mode == "create"
+      ? Object.values(ParkingLotTypes)[0].toString()
+      : modeData.data.parkingLotType
   );
   const [parkingPhoto, setParkingPhoto] = useState(
     "sgfd"
@@ -57,46 +47,42 @@ export const ParkingLotForm: React.FC = () => {
   const [parkingLotName, setParkingLotName] = useState(
     modeData.mode == "create" ? "" : modeData.data.name
   );
-  const [capacity, setCapacity] = useState(
-    modeData.mode == "create" ? "" : modeData.data.capacity
-  );
+  const [capacity, setCapacity] = useState(modeData.mode == "create" ? "" : modeData.data.capacity);
   const [security, setSecurity] = useState(modeData.mode == "create" ? "" : modeData.data.security);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setErrorMessage("");
     setLoading(true);
     event.preventDefault();
-      const config = {
-        headers: { Authorization: `Bearer ${userLogged.token}` },
-      };
-      axios
-        .put(
-          PUT_PARKING_ENDPOINT_ADDRESS,
-          {
-            id: modeData.mode == 'create' ? -1 : modeData.data.id,
-            security: security,
-            name: parkingLotName,
-            capacity: Number.parseFloat(capacity as string),
-            description: description,
-            latitude: Number.parseFloat(latitude as string),
-            longitude: Number.parseFloat(longitude as string),
-            pricePerDay: pricePerDay,
-            parkingLotType: parkingLotType,
-            photo: parkingPhoto,
-          },
-          config
-        )
-        .then((res) => {
-          console.log(res);
-          setErrorMessage("Parking lot added successfully!");
-          setRefresh(!refresh);
-          setLoading(false);
-        })
-        .catch((res) => {
-          console.log(res);
-          setErrorMessage("Error occured during adding parking lot");
-          setLoading(false);
-        });
+    const config = {
+      headers: { Authorization: `Bearer ${userLogged.token}` },
+    };
+    axios
+      .put(
+        PUT_PARKING_ENDPOINT_ADDRESS,
+        {
+          id: modeData.mode == "create" ? -1 : modeData.data.id,
+          security: security,
+          name: parkingLotName,
+          capacity: Number.parseFloat(capacity as string),
+          description: description,
+          latitude: Number.parseFloat(latitude as string),
+          longitude: Number.parseFloat(longitude as string),
+          pricePerDay: pricePerDay,
+          parkingLotType: parkingLotType,
+          photo: parkingPhoto,
+        },
+        config
+      )
+      .then((res) => {
+        setErrorMessage("Parking lot added successfully!");
+        setRefresh(!refresh);
+        setLoading(false);
+      })
+      .catch((res) => {
+        setErrorMessage("Error occured during adding parking lot");
+        setLoading(false);
+      });
   };
 
   return (

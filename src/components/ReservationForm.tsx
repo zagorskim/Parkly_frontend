@@ -1,32 +1,21 @@
 import Box from "@mui/material/Box";
 import { UserData } from "./../data/UserData";
-import { useRecoilState, useRecoilStoreID } from "recoil";
+import { useRecoilState } from "recoil";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import LoginIcon from "@mui/icons-material/LoginOutlined";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
 import axios from "axios";
-import {
-  ValidateNumeric,
-  ValidateNumericFloat,
-  ValidateLetters,
-  ValidateEmail,
-  ValidateDates,
-  ValidatePassword,
-} from "../data/ValidationFunctions";
+import { ValidateNumeric, ValidateDates } from "../data/ValidationFunctions";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import { CircularProgress, Fade, Stack } from "@mui/material";
+import { CircularProgress, Fade } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import Autocomplete from "@mui/material/Autocomplete";
-import Person2Icon from "@mui/icons-material/Person2";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { width } from "@mui/system";
-import { ReservationFormMode, RefreshReservations } from '../data/ReservationData';
-import { ParkingLotInquiry } from "../data/ParkingLotData";
+import { ReservationFormMode, RefreshReservations } from "../data/ReservationData";
 import { ParkingLotDetails } from "../data/ParkingLotTypes";
 import { PUT_RESERVATION_ENDPOINT_ADDRESS as POST_RESERVATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { AllParkingLots } from "./../data/ParkingLotData";
@@ -95,17 +84,14 @@ export const ReservationForm: React.FC = () => {
         config
       )
       .then((res) => {
-        console.log(res);
         setErrorMessage("Reservation added successfully!");
         setRefresh(!refresh);
         setLoading(false);
       })
       .catch((res) => {
-        console.log(res);
-        if(res.response.status == 409) {
-          setErrorMessage('No available parking slot left')
-        }
-        else {
+        if (res.response.status == 409) {
+          setErrorMessage("No available parking slot left");
+        } else {
           setErrorMessage("Error occured during creating reservation");
         }
         setLoading(false);

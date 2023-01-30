@@ -3,9 +3,7 @@ import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
@@ -20,7 +18,7 @@ import axios from "axios";
 import { CANCEL_RESERVATION_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 import { AllParkingLots } from "./../data/ParkingLotData";
 import { ParkingLotDetails } from "../data/ParkingLotTypes";
-import { RefreshReservations } from '../data/ReservationData';
+import { RefreshReservations } from "../data/ReservationData";
 
 export function ReservationListRow(props: { reservation: ReservationDetails }) {
   const reservation = props.reservation;
@@ -36,12 +34,9 @@ export function ReservationListRow(props: { reservation: ReservationDetails }) {
     axios
       .delete(CANCEL_RESERVATION_ENDPOINT_ADDRESS + "/" + reservation.reservationId, config)
       .then((res) => {
-        console.log(res);
         setRefresh(!refresh);
       })
-      .catch((res) => {
-        console.log(res);
-      });
+      .catch((res) => {});
   };
 
   return (

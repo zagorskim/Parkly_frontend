@@ -1,31 +1,22 @@
 import Box from "@mui/material/Box";
 import { UserData } from "./../data/UserData";
-import { useRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilState } from "recoil";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import LoginIcon from "@mui/icons-material/LoginOutlined";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
 import axios from "axios";
 import {
-  ValidateNumeric,
-  ValidateNumericFloat,
-  ValidateLetters,
   ValidateEmail,
-  ValidateDates,
   ValidatePassword,
 } from "../data/ValidationFunctions";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import { CircularProgress, Fade, Stack } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import Autocomplete from "@mui/material/Autocomplete";
+import { CircularProgress, Fade } from "@mui/material";
 import Person2Icon from "@mui/icons-material/Person2";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { ValidateLettersAndNumbers } from '../data/ValidationFunctions';
-import { CREATE_USER_ENDPOINT_ADDRESS } from '../ConnectionVariables';
+import { ValidateLettersAndNumbers } from "../data/ValidationFunctions";
+import { CREATE_USER_ENDPOINT_ADDRESS } from "../ConnectionVariables";
 
 export const UserForm: React.FC = () => {
   const [userLogged, setUserLogged] = useRecoilState(UserData);
@@ -42,23 +33,26 @@ export const UserForm: React.FC = () => {
     const config = {
       headers: { Authorization: `Bearer ${userLogged.token}` },
     };
-    axios.put(CREATE_USER_ENDPOINT_ADDRESS, {
-      // TEMPORARILY RAND UNTIL ID WON'T BE REQUIRED IN THE ENDPOINT
-      id: Math.floor(Math.random() * 10000),
-      username: userName,
-      password: password,
-      email: email,
-      userType: "BASIC",
-    }
-    , config).then((res) => {
-      console.log(res);
-      setErrorMessage('User created successfully!');
-      setLoading(false);
-    }).catch((res) => {
-      console.log(res);
-      setErrorMessage('Error occured during user creation');
-      setLoading(false);
-    })
+    axios
+      .put(
+        CREATE_USER_ENDPOINT_ADDRESS,
+        {
+          id: Math.floor(Math.random() * 10000),
+          username: userName,
+          password: password,
+          email: email,
+          userType: "BASIC",
+        },
+        config
+      )
+      .then((res) => {
+        setErrorMessage("User created successfully!");
+        setLoading(false);
+      })
+      .catch((res) => {
+        setErrorMessage("Error occured during user creation");
+        setLoading(false);
+      });
   };
 
   return (
@@ -112,7 +106,6 @@ export const UserForm: React.FC = () => {
                   onChange={(x) => setEmail(x.target.value)}
                   error={!ValidateEmail(email)}
                   helperText={!ValidateEmail(email) && "Wrong email format"}
-  
                 />
               </Grid>
               <Grid item xs={12}>
@@ -138,9 +131,9 @@ export const UserForm: React.FC = () => {
             </Button>
           </Box>
           <Box mt={3} sx={{ height: 40 }}></Box>
-            <Fade in={loading} unmountOnExit>
-              <CircularProgress sx={{ marginBottom: 20 }} />
-            </Fade>
+          <Fade in={loading} unmountOnExit>
+            <CircularProgress sx={{ marginBottom: 20 }} />
+          </Fade>
         </Box>
       </Container>
     </Box>
